@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "node Client/src/client.js",
+    "server": "node Server/server.js"
   },
-  "author": "",
+  "author": "Moussa",
   "license": "ISC"
 }

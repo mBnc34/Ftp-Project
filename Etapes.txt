@@ -1,0 +1,27 @@
+Bien sûr, voici les étapes pour implémenter un serveur et un client FTP à partir des sockets TCP sans utiliser de bibliothèque tierce :
+Étapes côté serveur :
+
+    Créer un socket serveur qui écoute sur le port FTP (par défaut, le port 21).
+    Accepter les connexions entrantes à partir des sockets clients.
+    Une fois une connexion établie, envoyer un message de bienvenue au client en envoyant une réponse 220 FTP server ready.
+    Attendre les commandes du client via la socket ouverte.
+    Interpréter chaque commande reçue, en effectuant les actions appropriées en fonction de la commande reçue.
+     Les commandes FTP commencent généralement par une chaîne de caractères en majuscules.
+    Envoyer des réponses à chaque commande via la socket, pour informer le client du résultat de la commande.
+    Fermer la connexion lorsqu'une commande de sortie (QUIT) est reçue.
+
+Étapes côté client :
+
+    Créer une socket client pour se connecter au serveur FTP sur le port FTP (par défaut, le port 21).
+    Établir la connexion avec le serveur en utilisant l'adresse IP du serveur et le port FTP.
+    Envoyer une commande USER au serveur FTP pour spécifier le nom d'utilisateur.
+    Envoyer une commande PASS au serveur FTP pour spécifier le mot de passe.
+    Envoyer une commande de commande pour télécharger ou téléverser des fichiers.
+    Envoyer une commande QUIT pour fermer la connexion et quitter le serveur FTP.
+
+Le serveur et le client FTP sont liés par le protocole FTP. Les commandes FTP sont envoyées par le client et interprétées par le serveur,
+ qui répond avec une réponse de commande. Les commandes et les réponses sont envoyées via la socket qui a été ouverte entre le client et le serveur.
+
+Pour utiliser les ports et les adresses IP pour les sockets, le serveur doit écouter sur un port spécifique (par exemple, le port FTP 21)
+ et le client doit se connecter à l'adresse IP et au port correspondants du serveur (par exemple, 127.0.0.1:21 pour se connecter à un serveur FTP local).
+  Les sockets TCP sont identifiées par une paire d'adresse IP et de port unique pour chaque socket.
