@@ -1,0 +1,25 @@
+Le protocole FTP utilise deux canaux de communication TCP distincts pour la commande et les données. 
+Le canal de commande utilise le port de commande FTP standard, qui est le port TCP 21. 
+Le canal de données utilise un port aléatoire pour transférer les données entre le client et le serveur.
+
+Pour implémenter l'utilisation des deux ports pour la commande et les données, vous pouvez suivre les étapes suivantes :
+Côté serveur :
+
+    Écouter sur le port de commande FTP standard (port 21) pour les connexions entrantes des clients.
+    Lorsque le client se connecte, envoyer un message de bienvenue et attendre les commandes.
+    Lorsqu'une commande de type "PASV" est reçue (utilisée pour établir une connexion de données),
+     le serveur doit ouvrir une socket de données sur un port aléatoire disponible (par exemple, dans la plage 1024-65535).
+    Le serveur doit envoyer l'adresse IP et le numéro de port de la socket de données ouverte au client via une réponse à la commande PASV.
+    Lorsqu'un client se connecte à la socket de données ouverte par le serveur, le serveur doit transférer les données demandées par le client 
+    (par exemple, un fichier) via la socket de données.
+
+Côté client :
+
+    Se connecter au serveur FTP sur le port de commande standard (port 21).
+    Envoyer des commandes de type "USER" et "PASS" pour s'authentifier auprès du serveur.
+    Lorsqu'une commande de type "PASV" est envoyée, le client doit recevoir l'adresse IP et le numéro de port de la socket de données ouverte par le serveur.
+    Le client doit se connecter à la socket de données ouverte par le serveur en utilisant l'adresse IP et le numéro de port reçus en réponse à la commande PASV.
+    Le client peut alors transférer des données (par exemple, télécharger ou téléverser des fichiers) via la socket de données.
+
+Il est important de noter que l'utilisation de deux sockets distinctes pour la commande et les données peut rendre la mise en œuvre de FTP un peu plus complexe, 
+mais cela permet également des transferts de fichiers plus rapides et plus efficaces.
