@@ -1,7 +1,6 @@
 {
   "name": "ftp-project",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,5 +8,17 @@
     "server": "node Server/server.js"
   },
   "author": "Moussa",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mBnc34/Ftp-Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mBnc34/Ftp-Project/issues"
+  },
+  "homepage": "https://github.com/mBnc34/Ftp-Project#readme",
+  "description": "",
+  "dependencies": {
+    "inquirer": "^9.2.0"
+  }
 }
