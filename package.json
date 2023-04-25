@@ -19,6 +19,7 @@
   "homepage": "https://github.com/mBnc34/Ftp-Project#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "inquirer": "^9.2.0"
   }
 }
