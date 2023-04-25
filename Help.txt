@@ -11,3 +11,13 @@ en gros coté client -> 2 choix
             230 Login successful.
             Remote system type is UNIX.
             Using binary mode to transfer files.
+
+
+pour les commandes --> penser à tout mettre en lowercase, ou juste ignorer la casse
+FTPClient.prototype.sendCommand = function (command, arg) {
+  if (arg) {
+    this.socket.write(`${command} ${arg}\r\n`);
+  } else {
+    this.socket.write(`${command}\r\n`);
+  }
+};
