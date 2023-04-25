@@ -40,4 +40,4 @@ function addUser(username, password) {
 }
 
 // Exemple d'utilisation de la fonction addUser
-addUser('user2', 'password1');
+addUser('test', 'admin');
