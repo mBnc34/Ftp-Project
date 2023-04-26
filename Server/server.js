@@ -4,6 +4,7 @@ var readline = require('readline');
 const PORT = 21;
 const HOST = 'localhost';
 const server = net.createServer();
+export var user = "";
 
 server.on('connection', socket => {
       console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
