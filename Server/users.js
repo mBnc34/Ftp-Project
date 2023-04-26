@@ -10,8 +10,6 @@ const users = JSON.parse(rawData);
 
 // Fonction pour ajouter un nouvel utilisateur avec un mot de passe haché
 function addUser(username, password) {
-  // Lecture du fichier JSON des utilisateurs
-//   const users = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
 
   // Vérification si l'utilisateur existe déjà
   if (users.hasOwnProperty(username)) {
