@@ -1,18 +1,34 @@
-var net = require('net');
-var readline = require('readline');
+const net = require('net');
+// var readline = require('readline');
+const {handleUserCommand} = require('./data');
+
 
 const PORT = 21;
 const HOST = 'localhost';
 const server = net.createServer();
+// var user = "";
+
+var connectionInformation = {
+      user: null,
+      connectionSocket: null,
+      dataSocket: null
+};
+
 
 server.on('connection', socket => {
-      console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
-      socket.write('Welcome new client!\n');
+      connectionInformation.connectionSocket= socket;
 
-      socket.on('data',data => {
-            console.log('data is:', data.toString() );
-            socket.write(`le server a recu les donnees : ${data.toString()}\r\n`)
+      // console.log(typeof(connectionSocket));
+      // console.log(typeof(socket));
+      // console.log(typeof(net.Socket)); // les 2 premiers sont OBJECT et la c'est fonction
+
+      console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
+      socket.write('220 Welcome from the server!\r\n');
+      socket.on('data', (data) => {
+            handleUserCommand(connectionInformation, data);
       });
+
+      
 });
 
-server.listen(PORT, HOST, () => console.log('Server Bound'));
+server.listen(PORT, HOST, () => console.log('Server FTP launched on port 21'));

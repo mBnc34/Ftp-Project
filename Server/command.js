@@ -9,19 +9,29 @@ var commands = {};
 
 /**
  * Register a command
- * @param {!string} command 
+ * @param {!string} commandName 
  * @param {string} helptext 
+ * @param {string} description
  * @param {!callable} callback 
  */
-exports.add = function (command, helptext, callback) {
+exports.add = function (commandName, helptext, description, callback) {
 
 
+      // Vérification si l'utilisateur existe déjà
+      if (commands.hasOwnProperty(commandName)) {
+            console.error(`Command ${commandName} already exists`);
+            return;
+      }
       // add the command :
-      commands[command] = {
-            command: command.toUpperCase(),
+      commands[commandName.toUpperCase()] = {
+            // commandName: commandName.toUpperCase(),
             helptext: helptext,
+            description: description,
             callback: callback
       };
+
+      console.log(commands);
+      commands[commandName].callback("testfs");
 };
 
 /**
