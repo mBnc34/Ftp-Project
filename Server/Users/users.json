@@ -43,5 +43,9 @@
       "users"
     ],
     "directory": "/Server"
+  },
+  "test": {
+    "user": "test",
+    "password": "$2b$10$ZqlGxiiLbZjX4uxpOdsV8.iNUmyzm4Xr.aOzdsPkKwPeX6L2N1rgO"
   }
 }

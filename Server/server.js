@@ -10,7 +10,8 @@ const server = net.createServer();
 var connectionInformation = {
       user: null,
       connectionSocket: null,
-      dataSocket: null
+      dataSocket: null,
+      isConnected: false
 };
 
 
