@@ -1,8 +1,11 @@
 // const { server } = require('./server');
 
-function handleUserCommand(socket, data) {
+function handleUserCommand(connectionInformation, data) {
 
     // console.log(data.toString());
+    const socket = connectionInformation.connectionSocket;
+    const user = connectionInformation.user;
+
     const dataSplit= data.toString().split(" ");
     const command = dataSplit[0];
 
