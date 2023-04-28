@@ -14,8 +14,17 @@ function handleUserCommand(connectionInformation, data) {
       socket.write('Server Ready!\r\n'); // pour debloquer le client
     }
     else if (command === 'USER') {
-      // Handle USER command
+
+      
+
+
+      
       socket.write('331 Please specify the password.\r\n');
+
+
+
+
+
     } else if (command === 'PASS') {
       // Handle PASS command
       socket.write('230 Login successful.\r\n');

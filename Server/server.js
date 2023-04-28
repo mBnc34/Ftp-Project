@@ -6,7 +6,6 @@ const {handleUserCommand} = require('./data');
 const PORT = 21;
 const HOST = 'localhost';
 const server = net.createServer();
-// var user = "";
 
 var connectionInformation = {
       user: null,
