@@ -23,7 +23,11 @@ server.on('connection', socket => {
       console.log(typeof(net.Socket)); // les 2 premiers sont OBJECT et la c'est fonction
       console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
       socket.write('220 Welcome from the server!\r\n');
-      handleUserCommand(socket);
+      socket.on('data', (data) => {
+            handleUserCommand(socket, data);
+      });
+
+      
 });
 
 server.listen(PORT, HOST, () => console.log('Server FTP launched on port 21'));
