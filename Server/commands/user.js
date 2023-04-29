@@ -1,6 +1,6 @@
 const commands = require('../command.js');
 const fs = require('fs');
-// const usersFile = require('../Users/users.json');
+
 const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/Users/users.json';
 const rawData = fs.readFileSync(usersFile);
 const users = JSON.parse(rawData);
@@ -8,6 +8,10 @@ const users = JSON.parse(rawData);
 const name = 'USER';
 const helpText = 'USER <sp> <username>';
 const description = 'To authenticate';
+
+/*
+creer une ref de connectionSocket peut etre
+*/
 
 function userFunction(connectionInformation, username) {
       if (connectionInformation.connectionSocket != null) {
@@ -24,7 +28,7 @@ function userFunction(connectionInformation, username) {
             // verifie que le user existe: 
             if (!existUser(username)) {
                   console.log("pas de user avec le nom " + username);
-                  socket.write(`Error (code) : pas d'utilisateur avec le nom ${username}`)
+                  connectionInformation.connectionSocket.write(`Error (code) : pas d'utilisateur avec le nom ${username}`)
                   return;
             }
 
@@ -44,4 +48,4 @@ function existUser(username) {
 
 commands.add(name, helpText, description, userFunction);
 
-module.exports = { userFunction };
+// module.exports = { userFunction };
