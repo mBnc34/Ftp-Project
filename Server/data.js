@@ -15,7 +15,7 @@ function handleUserCommand(connectionInformation, data) {
 
     const dataSplit= data.toString().split(" ");
     const command = dataSplit[0].trim();
-
+    console.log("command : "+ command);
     //apres au lieu de if / else if etc
     // soit faire un case soit utilliser un objet
 
@@ -30,6 +30,9 @@ function handleUserCommand(connectionInformation, data) {
     } else if (command === 'PASS') {
       const password = dataSplit[1].trim();
       commands.myCommands["PASS"].callback(connectionInformation,password);
+    
+    } else if (command === 'PWD' || command === 'XPWD') {
+      commands.myCommands["PWD"].callback(connectionInformation);
     
     } else {
       socket.write('500 Invalid command.\r\n');

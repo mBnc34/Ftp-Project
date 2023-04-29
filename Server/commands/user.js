@@ -20,7 +20,7 @@ function userFunction(connectionInformation, username) {
                   // message d'erreur : already connected
                   // connectionSocket.write('already connected');
                   console.log("deja connecté");
-                  connectionInformation.connectionSocket.write("error deja connecté"); //important pour debloquer le terminal du client
+                  connectionInformation.connectionSocket.write("error deja connecté\r\n"); //important pour debloquer le terminal du client
                   return;
             };
             // else
@@ -28,7 +28,7 @@ function userFunction(connectionInformation, username) {
             // verifie que le user existe: 
             if (!existUser(username)) {
                   console.log("pas de user avec le nom " + username);
-                  connectionInformation.connectionSocket.write(`Error (code) : pas d'utilisateur avec le nom ${username}`)
+                  connectionInformation.connectionSocket.write(`Error (code) : pas d'utilisateur avec le nom ${username}\r\n`)
                   return;
             }
 

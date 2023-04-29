@@ -18,6 +18,7 @@ function passwordFunction(connectionInformation, password) {
       if(match){
             connectionInformation.isConnected = true;
             connectionInformation.connectionSocket.write('230 Login successful.\r\n');
+            // appelé une fonction pour retr les droits et dossier de base
             return;
           }
           //else

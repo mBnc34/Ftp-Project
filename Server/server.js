@@ -12,9 +12,13 @@ var connectionInformation = {
       user: null,
       connectionSocket: null,
       dataSocket: null,
-      isConnected: false
+      isConnected: false,
+      rootDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory",
+      currentDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory"
 };
-
+// le rootDirectory : le point d'entrée du client (ne peut pas aller avant ca). --> a limité selon les permissions
+// currentDirectory: pour se deplacer de rootDirectory jusqu'au plus petit sous dossier max
+// pour pwd, on peut penser à faire currentDirectory - rootDirectory pour commnencer a partir de rootDirectory et pas voir avant
 
 server.on('connection', socket => {
       connectionInformation.connectionSocket= socket;
