@@ -5,34 +5,46 @@ const name = 'LIST';
 const helpText = 'LIST [<sp> pathname]';
 const description = 'List all files in a specified directory';
 
-// function listFunction(connectionInformation, path) {
-//       const dir = connectionInformation.currentDirectory;
-//       const result = "";
+let isOnScope;
+let finalPath;
 
-//       if (path == "") {
-//             const dir = connectionInformation.currentDirectory;
-//       }
-//       else {
-//             //utiliser le current directory
-//             // si ./ on doit enlever un dir au current ...
-//             // peut etre separer le dir avec "/" comme delimiteur
-//       }
+function listFunction(connectionInformation, path) {
+      const currentDir = connectionInformation.currentDirectory;
+      const rootDir = connectionInformation.rootDirectory;
+      let result;
 
-//       fs.readdir(dir, (err, files) => {
-//             if (err) {
-//                   connectionInformation.connectionSocket.write('500 code erreur + \r\n');
-//                   return;
-//             }
+      isOnScopeFun();
+      if (!isOnScope) {
+            console.log("chemin inexistant pour le client");
+            connectionInformation.connectionSocket.write("451 + msg\r\n");
+            return;
+      };
 
-//             files.forEach(file => {
-//                   result = result + file + " / ";
-//             });
-//             result = result.slice(0, -1);
-//             // write une erreur
-//       });
-//       connectionInformation.connectionSocket.write('')
+      if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory)) {
+            console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
+            connectionInformation.connectionSocket.write("451 + msg\r\n")
+      };
+      // else
 
-// }
+      fs.readdir(finalPath, (err, files) => {
+            if (err) {
+                  connectionInformation.connectionSocket.write('451 code erreur + \r\n');
+                  return;
+            }
+
+            files.forEach(file => {
+                  result = result + file + " / ";
+            });
+            result = result.slice(0, -1);
+            // write une erreur
+      });
+
+      //verifier que le chemin est mtnt réel (notamment à cause des sous dossier)
+      console.log("tout ok, result :\n"+ result );
+      connectionInformation.connectionSocket.write('212 directory status\r\n');
+      //maintenant on a besoin du dataSocket.
+
+}
 
 
 /*
@@ -42,30 +54,9 @@ const description = 'List all files in a specified directory';
  * retourner une erreur quand on veut fair .. sur un tabeau vide
  * Commme cela on est plus precis
  */
-function isOnScope(rootDir, currentDir, path) {
-      let finalArr = currentDir.split("/");
-      let pathArr = path.split("/");
 
-
-      for (str of pathArr) {
-            if (str == "." || str == "..") {
-                  finalArr.pop();
-            }
-            else {
-                  finalArr.push(str);
-            }
-      }
-
-      //maintenant on reforme finalArr et on regarde si il comprent rootDir
-      finalArr = finalArr.join("/"); //attention changement de type dynamique
-      console.log(finalArr);
-      if (finalArr.includes(rootDir)) return true;
-      else return false;
-}
-
-
-// ou directement tt faire dans cette fonction et retourner le chemin final car  on fait push et pop deja 
-function isOnScope2(rootDir, currentDir, path) {
+// return 
+function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
       dir = dir.split("/");
       if (dir[0] == "") dir = dir.slice(1);
@@ -75,8 +66,10 @@ function isOnScope2(rootDir, currentDir, path) {
       for (str of pathArr) {
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        console.log("chemin non autorisé");
-                        return false;
+                        // console.log("chemin non autorisé");
+                        finalPath = null;
+                        isOnScope = false;
+                        return;
                   }
                   else {
                         dir.pop();
@@ -86,17 +79,38 @@ function isOnScope2(rootDir, currentDir, path) {
                   dir.push(str);
             }
       }
-      console.log(`finalDir ${dir}`);
-      return true;
-      // dir = "/" + dir.join("/");
-      // console.log(`dir${dir}`);
-      //concat root + dir
+      isOnScope = true;
+      dir = "/" + dir.join("/");
+      dir = rootDir + dir;
+      finalPath = dir;
+      // console.log(`finalPath ${finalPath}`);
+};
 
-}
+
+// function isOnScope2(rootDir, currentDir, path) {
+//       let finalArr = currentDir.split("/");
+//       let pathArr = path.split("/");
 
 
-console.log(isOnScope2("A/B/C", "A/B/C/D", "./C2"));
-console.log(isOnScope2("A/B/C", "A/B/C/D", "../../../../A"));
-console.log(isOnScope2("A/B/C", "A/B/C/D", "E/F/G"));
-console.log(isOnScope2("A/B/C", "A/B/C/D", "../../../../A/B/C/D"));
-console.log(isOnScope2("A/B/C", "A/B/C/D", "../../../../A/B/"));
+//       for (str of pathArr) {
+//             if (str == "." || str == "..") {
+//                   finalArr.pop();
+//             }
+//             else {
+//                   finalArr.push(str);
+//             }
+//       }
+
+//       //maintenant on reforme finalArr et on regarde si il comprent rootDir
+//       finalArr = finalArr.join("/"); //attention changement de type dynamique
+//       console.log(finalArr);
+//       if (finalArr.includes(rootDir)) return true;
+//       else return false;
+// };
+
+
+isOnScopeFun("A/B/C", "A/B/C/D", "../C2")
+isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A");
+isOnScopeFun("A/B/C", "A/B/C/D", "E/F/G");
+isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A/B/C/D");
+isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A/B/");
