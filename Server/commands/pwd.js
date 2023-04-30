@@ -11,7 +11,7 @@ function pwdFunction(connectionInformation) {
             connectionInformation.connectionSocket.write("530 not connected\r\n");
             return;
       }
-      const path = "$ " + connectionInformation.currentDirectory.replace(connectionInformation.rootDirectory,"");
+      const path = "/" + connectionInformation.currentDirectory.replace(connectionInformation.rootDirectory,"");
       console.log("path pwd : "+ path);
       connectionInformation.connectionSocket.write(`257 ${path}\r\n`);
 };

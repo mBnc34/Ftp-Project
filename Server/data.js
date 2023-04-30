@@ -6,6 +6,9 @@ require('./commands/index.js'); // apres enlever et creer des index.js dans chaq
 console.log(commands.myCommands);
 // console.log(users);
 
+// ls : nlst
+// get : RETR
+// close : QUIT
 
 
 function handleUserCommand(connectionInformation, data) {
