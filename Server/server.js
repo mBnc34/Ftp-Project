@@ -22,14 +22,11 @@ var connectionInformation = {
 
 server.on('connection', socket => {
       connectionInformation.connectionSocket= socket;
-
-      // console.log(typeof(connectionSocket));
-      // console.log(typeof(socket));
-      // console.log(typeof(net.Socket)); // les 2 premiers sont OBJECT et la c'est fonction
-
+     
       console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
       socket.write('220 Welcome from the server!\r\n');
       socket.on('data', (data) => {
+            console.log(`data ${data}`);
             handleUserCommand(connectionInformation, data);
       });
 
