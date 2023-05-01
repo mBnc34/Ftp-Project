@@ -1,4 +1,5 @@
 const commands = require('../command.js');
+const ports = require('./port.js');
 
 const fs = require('fs');
 const name = 'LIST';
@@ -13,7 +14,7 @@ function listFunction(connectionInformation, path) {
       const rootDir = connectionInformation.rootDirectory;
       let result;
 
-      isOnScopeFun();
+      isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
             console.log("chemin inexistant pour le client");
             connectionInformation.connectionSocket.write("550 + msg\r\n");
@@ -26,27 +27,50 @@ function listFunction(connectionInformation, path) {
       };
       // else
 
+      console.log(`final path avant readdir : ${finalPath}`);
       fs.readdir(finalPath, (err, files) => {
             if (err) {
                   connectionInformation.connectionSocket.write('425 code erreur + msg \r\n');
+                  connectionInformation.dataSocket.end();
                   return;
             }
 
-            files.forEach(file => {
-                  result = result + file + " / ";
-            });
-            result = result.slice(0, -1);
-            // write une erreur
+            let response = formatList(finalPath,files);
+            // ports.socket.write(response, 'binary', () => {
+            //       connectionInformation.dataSocket.end();
+            // });
+            console.log(`response : ${response}`);
+            connectionInformation.dataSocket.write(response, 'ascii', () => {
+                  console.log("test apres envoie");
+                  connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+                  connectionInformation.dataSocket.end();
+            })
       });
 
-      //verifier que le chemin est mtnt réel (notamment à cause des sous dossier)
-      console.log("tout ok, result :\n"+ result );
       connectionInformation.connectionSocket.write('150 transfer in progress\r\n');
-      //maintenant on a besoin du dataSocket.
-      // et pour indiquier la fin code  226
 };
 
- 
+
+function formatList(path, files) {
+      let response = '';
+
+      files.forEach((file) => {
+            let pathFile = path + file.toString();
+            // console.log(`pathFile :  ${pathFile}`);
+            let stats = fs.statSync(pathFile);
+
+            // Formater chaque fichier avec les informations requises par le protocole FTP
+            let fileMode = stats.mode.toString(8);
+            let fileSize = stats.size;
+            let fileDate = stats.mtime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
+            response += `${fileMode} 1 user group ${fileSize} ${fileDate} ${file}\r\n`;
+      });
+
+      return response;
+}
+
+
 function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
       dir = dir.split("/");
@@ -74,8 +98,10 @@ function isOnScopeFun(rootDir, currentDir, path) {
       dir = "/" + dir.join("/");
       dir = rootDir + dir;
       finalPath = dir;
-      // console.log(`finalPath ${finalPath}`);
+      console.log(`finalPath ${finalPath}`);
 };
+
+commands.add(name, helpText, description, listFunction);
 
 // isOnScopeFun("A/B/C", "A/B/C/D", "../C2")
 // isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A");
