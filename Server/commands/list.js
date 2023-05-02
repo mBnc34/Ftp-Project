@@ -58,19 +58,25 @@ function formatList(path, files) {
             // console.log(`pathFile :  ${pathFile}`);
             let stats = fs.statSync(pathFile);
             let type;
-            if (fs.lstatSync(pathFile).isDirectory) {
-                  type = "dir";
-            } else if (fs.lstatSync(pathFile).isFile) {
-                  type = "file";
+            if (fs.lstatSync(pathFile).isDirectory()) {
+                  type = "d";
+                  console.log(`${file} is directory`);
+            } else if (fs.lstatSync(pathFile).isFile()) {
+                  type = "-";
+                  console.log(`${file} is file`);
             }
-
+            
             // Formater chaque fichier avec les informations requises par le protocole FTP
             // let fileMode = stats.mode.toString(8);
-            let fileSize = stats.size/1000; //pour passer de octet à kOctet
-            // let fileDate = stats.mtime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            const typeFile = fs.lstatSync(pathFile).isDirectory() ? 'd' : '-';
+            console.log(`typeFile : ${typeFile}`);
+            const name = file.toString();
+            console.log(`name : ${name}`);
+            const fileSize = stats.size/1000; //pour passer de octet à kOctet
+            const mtime = fs.statSync(pathFile).mtime.toISOString().replace('T', ' ').replace(/\.\d+Z/, '');
 
-            // response += `${fileMode} 1 user group ${fileSize} ${fileDate} ${file}\r\n`;
-            response += `${type} : ${file}  / size : ${fileSize}\r\n`;
+            response += `${type}rw-r--r-- 1 owner group ${fileSize} ${mtime} ${name}\r\n`;
+            // response += `${type} : ${file}  / size : ${fileSize}\r\n`;
       });
 
       return response;
