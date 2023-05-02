@@ -11,3 +11,10 @@ The Server and the Client parts : [Server](Server/server.md)  / [Client](Client/
 | :---: | :---: |:---: | :---: | :---: |
 | JavaScript | commonJS | nodeJS | 'net' | windows |
 
+## Some difficulties :
+- Manage 2 sockets :    
+  - Comand's socket to manage the first connexion and the commands
+  - Data's socket when data need to be send (data that is not just message and code)
+- Manage the 2 connection mode :
+  - Active mode : 
+  - Passive mode : To let the client decide his own port for data socket 

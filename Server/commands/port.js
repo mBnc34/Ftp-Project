@@ -1,4 +1,4 @@
-const commands = require('../command.js');
+const commands = require('../src/command.js');
 const net = require('net');
 
 const name = 'PORT';

@@ -1,4 +1,4 @@
-const commands = require('../command.js');
+const commands = require('../src/command.js');
 const ports = require('./port.js');
 
 const fs = require('fs');

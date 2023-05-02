@@ -1,7 +1,7 @@
 const net = require('net');
 // var readline = require('readline');
-const { handleUserCommand } = require('./data');
-require('./commands/index.js');//pour remplir toutes les commandes
+const { handleUserCommand } = require('./data.js');
+require('../commands/index.js');//pour remplir toutes les commandes
 
 
 const PORT = 21;

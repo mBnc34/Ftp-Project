@@ -1,7 +1,7 @@
-const commands = require('../command.js');
+const commands = require('../src/command.js');
 const fs = require('fs');
 
-const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/Users/users.json';
+const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/src/Users/users.json';
 const rawData = fs.readFileSync(usersFile);
 const users = JSON.parse(rawData);
 
