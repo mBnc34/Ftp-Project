@@ -69,11 +69,12 @@ function formatList(path, files) {
             // Formater chaque fichier avec les informations requises par le protocole FTP
             // let fileMode = stats.mode.toString(8);
             const typeFile = fs.lstatSync(pathFile).isDirectory() ? 'd' : '-';
-            console.log(`typeFile : ${typeFile}`);
+            // console.log(`typeFile : ${typeFile}`);
             const name = file.toString();
-            console.log(`name : ${name}`);
+            // console.log(`name : ${name}`);
             const fileSize = stats.size/1000; //pour passer de octet à kOctet
-            const mtime = fs.statSync(pathFile).mtime.toISOString().replace('T', ' ').replace(/\.\d+Z/, '');
+            const mtime = fs.statSync(pathFile).mtime.toISOString().replace('T', ' ').replace(/\.\d+Z/, '').split(" ").shift();
+            // console.log(`mtime : ${mtime}`);
 
             response += `${type}rw-r--r-- 1 owner group ${fileSize} ${mtime} ${name}\r\n`;
             // response += `${type} : ${file}  / size : ${fileSize}\r\n`;
