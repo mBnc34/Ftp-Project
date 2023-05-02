@@ -1,0 +1,51 @@
+{
+  "user1": {
+    "user": "user1",
+    "password": "$2b$10$P6hbtTEd.MU98TzujXxYm.kgoe9gSBVjVkwadjrnKsXYca1olyIOy",
+    "GeneralPermissions": [
+      "read"
+    ],
+    "SpecificPermssions": [
+      [
+        "/server/RootDirectory/testdoc",
+        "write"
+      ],
+      [
+        "/server/RootDirectory/test2docs2",
+        "write"
+      ]
+    ],
+    "directory": "/server/RootDirectory/users1"
+  },
+  "user11": {
+    "user": "user11",
+    "password": "$2b$10$5AlGbBbMiEWnwX2YXYJ3MuFobwCDErX3Z./1580HdWC15eRkegSvS"
+  },
+  "user2": {
+    "user": "user2",
+    "password": "$2b$10$Bx4kC3rejxcpAYxCpjDxZeL61FixWAPv60mT7LUER8VCVjLy0Npd."
+  },
+  "anonymous": {
+    "user": "anonymous",
+    "password": "",
+    "GeneralPermissions": [
+      "read"
+    ],
+    "directory": "/server/RootDirectory/guestUsers"
+  },
+  "admin": {
+    "user": "admin",
+    "password": "$2b$10$2jPKsb/qmX2p8e4a5ptWOeJTsO5ddIoa0FiiWfWPHwIgGHqLkNKMi",
+    "GeneralPermissions": [
+      "read",
+      "write",
+      "directory",
+      "users"
+    ],
+    "directory": "/Server"
+  },
+  "test": {
+    "user": "test",
+    "password": "$2b$10$ZqlGxiiLbZjX4uxpOdsV8.iNUmyzm4Xr.aOzdsPkKwPeX6L2N1rgO"
+  }
+}
