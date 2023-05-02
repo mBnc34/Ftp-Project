@@ -5,7 +5,10 @@
  */
 
 // Array object of all commands. Each command have his own object
-var commands = {};
+var myCommands = {};
+// module.exports = {myCommands};
+exports.myCommands = myCommands;
+// pour l'instant j'export ca mais apres --> creer fonction get(...) pour avoir les commandes voulues
 
 /**
  * Register a command
@@ -18,20 +21,20 @@ exports.add = function (commandName, helptext, description, callback) {
 
 
       // Vérification si l'utilisateur existe déjà
-      if (commands.hasOwnProperty(commandName)) {
+      if (myCommands.hasOwnProperty(commandName)) {
             console.error(`Command ${commandName} already exists`);
             return;
       }
       // add the command :
-      commands[commandName.toUpperCase()] = {
+      myCommands[commandName.toUpperCase()] = {
             // commandName: commandName.toUpperCase(),
             helptext: helptext,
             description: description,
             callback: callback
       };
 
-      console.log(commands);
-      commands[commandName].callback("testfs");
+      // console.log(myCommands);
+      // commands[commandName].callback("testfs");
 };
 
 /**
@@ -39,7 +42,7 @@ exports.add = function (commandName, helptext, description, callback) {
  * @param {!string} command
  */
 exports.remove = function (command) {
-      delete commands[command];
+      delete myCommands[command];
 };
 
 /**
@@ -48,7 +51,7 @@ exports.remove = function (command) {
  * @return {boolean}
  */
 exports.exists = function (command) {
-      return typeof (commands[command.toUpperCase()]) !== 'undefined';
+      return typeof (myCommands[command.toUpperCase()]) !== 'undefined';
 };
 
 /**
@@ -57,7 +60,7 @@ exports.exists = function (command) {
  * @return {string}
  */
 exports.help = function (command) {
-      return commands[command.toUpperCase()].helpText;
+      return myCommands[command.toUpperCase()].helpText;
 };
 
 // create the fucntion that react to command received :

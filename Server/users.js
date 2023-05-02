@@ -38,4 +38,4 @@ function addUser(username, password) {
 }
 
 // Exemple d'utilisation de la fonction addUser
-addUser('test', 'admin');
+addUser('test', 'test');

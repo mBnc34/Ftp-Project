@@ -1,45 +1,51 @@
-const { add } = require('../command');
-const users = require('../Users/users.json');
-const {user, connectionSocket, server} = require('../server');
+const commands = require('../command.js');
+const fs = require('fs');
+
+const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/Users/users.json';
+const rawData = fs.readFileSync(usersFile);
+const users = JSON.parse(rawData);
 
 const name = 'USER';
 const helpText = 'USER <sp> <username>';
 const description = 'To authenticate';
 
-function userFunction (username) {
-      if(connectionSocket != null){
-             // console.log(message);
-      if (user) {
-            // message d'erreur : already connected
-            connectionSocket.write('already connected')
-            console.log("deja connecté");
-            return;
-      };
-      // else
+/*
+creer une ref de connectionSocket peut etre
+*/
 
-      // verifie que le user existe: 
-      if (!existUser(username)){
-            // message d'erreur : le user n'existe pas
-            // peut-etre faire apres pass.
-            console.log("user doesnt exist");
-            connectionSocket.write("user doesn't exist");
+function userFunction(connectionInformation, username) {
+      if (connectionInformation.connectionSocket != null) {
+            // console.log(message);
+            if (connectionInformation.isConnected) {
+                  // message d'erreur : already connected
+                  // connectionSocket.write('already connected');
+                  console.log("deja connecté");
+                  connectionInformation.connectionSocket.write("error deja connecté\r\n"); //important pour debloquer le terminal du client
+                  return;
+            };
+            // else
+
+            // verifie que le user existe: 
+            if (!existUser(username)) {
+                  console.log("pas de user avec le nom " + username);
+                  connectionInformation.connectionSocket.write(`Error (code) : pas d'utilisateur avec le nom ${username}\r\n`)
+                  return;
+            }
+
+            // else
+            connectionInformation.user = username; 
+            // --> NON On doit faire apres password
+            connectionInformation.connectionSocket.write('331 User name okay, need password.\r\n');
             return;
       }
-
-      // else
-      console.log("ici");
-      connectionSocket.write("j'attends pass;")
-      // message pour dire d'ecrire PASS + password
-      // serveur en ecoute de data
-      // appelé passFunction
-      }
-     console.log("pas de socket, pas de connection");
+      console.log("pas de socket, pas de connection");
 }
 
-function existUser(username){
-      return Object.keys(users).includes(username);
+function existUser(username) {
+      // return Object.keys(users).includes(username);
+      return users.hasOwnProperty(username);
 }
 
-add(name, helpText, description, userFunction);
+commands.add(name, helpText, description, userFunction);
 
-module.exports = {userFunction};
+// module.exports = { userFunction };
