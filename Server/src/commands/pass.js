@@ -1,4 +1,4 @@
-const commands = require('../src/command.js');
+const commands = require('../command.js');
 const bcrypt = require('bcrypt');
 
 const fs = require('fs');

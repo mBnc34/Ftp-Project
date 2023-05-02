@@ -1,4 +1,4 @@
-const commands = require('../src/command.js');
+const commands = require('../command.js');
 const fs = require('fs');
 
 const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/src/Users/users.json';
