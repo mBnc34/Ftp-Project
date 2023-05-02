@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "node Client/src/client.js",
-    "server": "node ./node_modules/nodemon/bin/nodemon.js Server/server.js"
+    "server": "node ./node_modules/nodemon/bin/nodemon.js Server/src/server.js"
   },
   "author": "Moussa",
   "license": "ISC",

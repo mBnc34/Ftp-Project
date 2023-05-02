@@ -1,6 +1,6 @@
 const net = require('net');
 // var readline = require('readline');
-const { handleUserCommand } = require('./data');
+const { handleUserCommand } = require('./data.js');
 require('./commands/index.js');//pour remplir toutes les commandes
 
 
