@@ -27,7 +27,7 @@ function listFunction(connectionInformation, path) {
       };
       // else
 
-      console.log(`final path avant readdir : ${finalPath}`);
+      // console.log(`final path avant readdir : ${finalPath}`);
       fs.readdir(finalPath, (err, files) => {
             if (err) {
                   connectionInformation.connectionSocket.write('425 code erreur + msg \r\n');
@@ -39,9 +39,8 @@ function listFunction(connectionInformation, path) {
             // ports.socket.write(response, 'binary', () => {
             //       connectionInformation.dataSocket.end();
             // });
-            console.log(`response : ${response}`);
+            console.log(`response : \n${response}`);
             connectionInformation.dataSocket.write(response, 'ascii', () => {
-                  console.log("test apres envoie");
                   connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                   connectionInformation.dataSocket.end();
             })
@@ -58,13 +57,20 @@ function formatList(path, files) {
             let pathFile = path + file.toString();
             // console.log(`pathFile :  ${pathFile}`);
             let stats = fs.statSync(pathFile);
+            let type;
+            if (fs.lstatSync(pathFile).isDirectory) {
+                  type = "dir";
+            } else if (fs.lstatSync(pathFile).isFile) {
+                  type = "file";
+            }
 
             // Formater chaque fichier avec les informations requises par le protocole FTP
-            let fileMode = stats.mode.toString(8);
-            let fileSize = stats.size;
-            let fileDate = stats.mtime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            // let fileMode = stats.mode.toString(8);
+            let fileSize = stats.size/1000; //pour passer de octet à kOctet
+            // let fileDate = stats.mtime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-            response += `${fileMode} 1 user group ${fileSize} ${fileDate} ${file}\r\n`;
+            // response += `${fileMode} 1 user group ${fileSize} ${fileDate} ${file}\r\n`;
+            response += `${type} : ${file}  / size : ${fileSize}\r\n`;
       });
 
       return response;
@@ -98,7 +104,7 @@ function isOnScopeFun(rootDir, currentDir, path) {
       dir = "/" + dir.join("/");
       dir = rootDir + dir;
       finalPath = dir;
-      console.log(`finalPath ${finalPath}`);
+      // console.log(`finalPath ${finalPath}`);
 };
 
 commands.add(name, helpText, description, listFunction);
