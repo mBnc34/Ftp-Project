@@ -45,7 +45,7 @@ function listFunction(connectionInformation, path) {
                   connectionInformation.dataSocket.end();
             })
       });
-      connectionInformation.currentDirectory = rootDir;// on reinitialise
+      // connectionInformation.currentDirectory = rootDir;// on reinitialise
       connectionInformation.connectionSocket.write('150 transfer in progress\r\n');
 };
 

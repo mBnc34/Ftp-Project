@@ -9,9 +9,16 @@ let isOnScope;
 let finalPath;
 
 function cwdFunction(connectionInformation, path) {
-      const currentDir = connectionInformation.currentDirectory;
+      console.log(`path cwd : ${path}`);
       const rootDir = connectionInformation.rootDirectory;
-
+      let currentDir;
+      if (path.charAt(0) == "/") {
+            currentDir = rootDir;
+      }
+      else {
+            currentDir = connectionInformation.currentDirectory;
+      };
+      // psq si "/" en premier ca veut dire que le path commence à la racine et pas au current dir
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
             console.log("chemin inexistant pour le client");
