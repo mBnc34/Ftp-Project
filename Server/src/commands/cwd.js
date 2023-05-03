@@ -25,7 +25,7 @@ function cwdFunction(connectionInformation, path) {
             connectionInformation.connectionSocket.write("550 + msg\r\n");
             return;
       };
-      if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory)) {
+      if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
             console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
             connectionInformation.connectionSocket.write("550 + msg\r\n");
             return;

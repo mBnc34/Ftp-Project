@@ -40,10 +40,12 @@ function handleUserCommand(connectionInformation, data) {
   else if (command === 'TYPE') {
     const data = dataSplit[1].trim().toString();
     if (data == "I") {
+      // connectionInformation.type="I";
       socket.write('200 Type set to Binary.\r\n');
       // socket.write('550 Only ASCII mode is supported by this server.\r\n');
     }
     else if (data == "A") {
+      // connectionInformation.type="A";
       socket.write('200 Type set to A.\r\n');
     }
   }
@@ -58,6 +60,10 @@ function handleUserCommand(connectionInformation, data) {
   else if (command === "PORT") {
     const data =  dataSplit[1].trim().toString().trim();
     commands.myCommands["PORT"].callback(connectionInformation,data);
+  }
+  else if (command === "RETR") {
+    let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+    commands.myCommands["RETR"].callback(connectionInformation,path);
   }
   else {
     socket.write('500 Invalid command.\r\n');

@@ -4,3 +4,4 @@ require('./pwd.js');
 require('./port.js');
 require('./list.js');
 require('./cwd.js');
+require('./retr.js')

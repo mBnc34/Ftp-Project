@@ -12,7 +12,7 @@ var connectionInformation = {
       user: null,
       connectionSocket: null,
       dataSocket: null,
-      type: 'ascii',
+      type: 'A',
       isConnected: false,
       rootDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory",
       currentDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory"

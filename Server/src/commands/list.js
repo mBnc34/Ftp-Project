@@ -9,9 +9,15 @@ let isOnScope;
 let finalPath;
 
 function listFunction(connectionInformation, path) {
-      const currentDir = connectionInformation.currentDirectory;
       const rootDir = connectionInformation.rootDirectory;
-      
+      let currentDir;
+      if (path.charAt(0) == "/") {
+            currentDir = rootDir;
+      }
+      else {
+            currentDir = connectionInformation.currentDirectory;
+      };
+      // cf cwd
 
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
@@ -20,7 +26,7 @@ function listFunction(connectionInformation, path) {
             return;
       };
 
-      if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory)) {
+      if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
             console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
             connectionInformation.connectionSocket.write("550 + msg\r\n")
             return;
@@ -43,7 +49,7 @@ function listFunction(connectionInformation, path) {
             connectionInformation.dataSocket.write(response, 'ascii', () => {
                   connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                   connectionInformation.dataSocket.end();
-            })
+            });
       });
       // connectionInformation.currentDirectory = rootDir;// on reinitialise
       connectionInformation.connectionSocket.write('150 transfer in progress\r\n');
