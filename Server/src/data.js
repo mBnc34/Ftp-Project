@@ -33,6 +33,7 @@ function handleUserCommand(connectionInformation, data) {
     const password = dataSplit[1].trim();
     commands.myCommands["PASS"].callback(connectionInformation, password);
   }
+  // PROBLEME PWD -> APRES CWD mon currentDir a beaucoup trop de "/" au debut
   else if (command === 'PWD' || command === 'XPWD') {
     commands.myCommands["PWD"].callback(connectionInformation);
   }
@@ -49,6 +50,10 @@ function handleUserCommand(connectionInformation, data) {
   else if (command === 'LIST' || command === 'NLST') {
     const path = ""; //pour le moment
     commands.myCommands["LIST"].callback(connectionInformation, path);
+  }
+  else if (command === 'CWD' ) {
+    let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+    commands.myCommands["CWD"].callback(connectionInformation, path);
   }
   else if (command === "PORT") {
     const data =  dataSplit[1].trim().toString().trim();
