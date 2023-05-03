@@ -1,7 +1,7 @@
 const net = require('net');
 // var readline = require('readline');
 const { handleUserCommand } = require('./data.js');
-require('./commands/index.js');//pour remplir toutes les commandes
+require('./commands/INDEX.js');//pour remplir toutes les commandes
 
 
 const PORT = 21;
@@ -30,6 +30,10 @@ server.on('connection', socket => {
             console.log(`data ${data}`);
             handleUserCommand(connectionInformation, data);
       });
+      socket.on('close', ()=> {
+            connectionInformation.isConnected = false;
+            console.log("client disconnected");
+      })
 });
 
 server.listen(PORT, HOST, () => console.log('Server FTP launched on port 21'));
