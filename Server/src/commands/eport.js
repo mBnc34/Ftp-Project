@@ -6,7 +6,7 @@ const name = 'EPRT';
 const helpText = 'EPRT <sp> <host-port>'; //a changer plus tard
 const description = 'To initiate any data transference in active mode';
 
-let localAddress = 'localhost';
+// let localAddress = 'localhost';
 // let localAddress = '172.18.80.157';
 
 
