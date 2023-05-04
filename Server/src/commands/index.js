@@ -7,3 +7,4 @@ require('./cwd.js');
 require('./retr.js');
 require('./pasv.js');
 require('./stor.js');
+require('./eport.js');

@@ -11,9 +11,9 @@ let localAddress = 'localhost';
 
 
 function portFunction(connectionInformation, data) {
-      const dataArr = data.split(',');
-      const addr = dataArr.slice(0, 4).join('.');
-      const port = parseInt(dataArr[4]) * 256 + parseInt(dataArr[5]);
+      const dataArr = data.split('|').filter(str => str.trim() !== "");;
+      const addr = dataArr[1];
+      const port = dataArr[2];
       
       connectionInformation.connectionSocket.write('200 PORT  command sucess\r\n');
 
