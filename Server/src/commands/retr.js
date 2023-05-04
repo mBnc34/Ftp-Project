@@ -39,6 +39,7 @@ function retrFunction(connectionInformation, path) {
       console.log(`final path avant filestream [${finalPath}]`);
       // connectionInformation.
       const fileStream = fs.createReadStream(finalPath);
+      // console.log(`datasocket client ${connectionInformation.dataSocket.remoteAddress}:${connectionInformation.dataSocket.remotePort} `);
       fileStream.pipe(connectionInformation.dataSocket);
       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
 };

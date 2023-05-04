@@ -36,7 +36,8 @@ function handleUserCommand(connectionInformation, data) {
                   break;
             case "PWD":
             case "XPWD":
-                  commands.myCommands["PWD"].callback(connectionInformation);
+                  let pwdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  commands.myCommands["PWD"].callback(connectionInformation, pwdPath);
                   break;
             case "PORT":
                   const dataPort = dataSplit[1].trim().toString().trim();
@@ -47,13 +48,23 @@ function handleUserCommand(connectionInformation, data) {
                   const path = ""; //pour le moment
                   commands.myCommands["LIST"].callback(connectionInformation, path);
                   break;
+            case "RETR":
+                  let retrPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  commands.myCommands["RETR"].callback(connectionInformation, retrPath);
+                  break;
+            case "CWD":
+                  let cwdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  commands.myCommands["CWD"].callback(connectionInformation, cwdPath);
+                  break;
             case "TYPE":
                   const dataType = dataSplit[1].trim().toString();
                   if (dataType == "I") {
+                        // connectionInformation.type="I";
                         socket.write('200 Type set to Binary.\r\n');
                         // socket.write('550 Only ASCII mode is supported by this server.\r\n');
                   }
                   else if (dataType == "A") {
+                        // connectionInformation.type="A";
                         socket.write('200 Type set to A.\r\n');
                   }
                   break;
