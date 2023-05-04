@@ -35,10 +35,10 @@ function retrFunction(connectionInformation, path) {
       let transferMode;
       if(connectionInformation.type == "A") transferMode = 'ascii'
       else transferMode = 'binary'
-
+      
       console.log(`final path avant filestream [${finalPath}]`);
       // connectionInformation.
-      const fileStream = fs.createReadStream(finalPath);
+      const fileStream = fs.createReadStream(finalPath); // A preciser le mode
       // console.log(`datasocket client ${connectionInformation.dataSocket.remoteAddress}:${connectionInformation.dataSocket.remotePort} `);
       fileStream.pipe(connectionInformation.dataSocket);
       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
