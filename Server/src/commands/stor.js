@@ -1,7 +1,7 @@
 const commands = require('../command.js');
 const fs = require('fs');
 
-
+// test pull
 const name = 'STOR';
 const helpText = 'STOR <sp> pathname';
 const description = 'To upload a specified file';
