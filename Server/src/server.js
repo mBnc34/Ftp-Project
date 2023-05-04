@@ -4,8 +4,8 @@
       require('./commands/INDEX.js');//pour remplir toutes les commandes
 
       const PORT = 21;
-      // const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
-      const HOST = '172.18.80.157';
+      const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
+      // const HOST = '192.168.57.104';
       const server = net.createServer();
 
       // le rootDirectory : le point d'entrée du client (ne peut pas aller avant ca). --> a limité selon les permissions

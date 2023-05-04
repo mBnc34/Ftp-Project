@@ -8,6 +8,13 @@ const description = 'To upload a specified file';
 
 let isOnScope;
 let finalPath;
+let finalFileDir;
+
+
+/*
+Probleme restant --> si un fichier a des espaces alors on perd de l'information du nom et surtout l'extension
+aussi --> essayer de voir pour les types (ascii, utf ....)
+*/
 
 function storFunction(connectionInformation, path) {
       const rootDir = connectionInformation.rootDirectory;
@@ -30,14 +37,56 @@ function storFunction(connectionInformation, path) {
             return;
       };
 
-      let transferMode;
-      if(connectionInformation.type == "A") transferMode = 'ascii'
-      else transferMode = 'binary'
+      // let transferMode;
+      // if (connectionInformation.type == "A") transferMode = 'ascii'
+      // else transferMode = 'binary'
+      // console.log(transferMode);
 
-      // console.log(`final path avant filestream de stor[${finalPath}]`);
-      // const fileStream = fs.createWriteStream(finalPath, { encoding: transferMode }); // Mode binaire
-      // fileStream.pipe(connectionInformation.dataSocket);
-      connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+      // fs.createWriteStream(finalFileDir);
+      const writeStream = fs.createWriteStream(finalFileDir);
+      // const readStream = connectionInformation.dataSocket;
+
+      if (!writeStream.writable) {
+            console.error(`write stream is not writable: ${finalFileDir}`);
+            connectionInformation.dataSocket.end();
+            return;
+      }
+
+      // if (!readStream.readable) {
+      //       console.error(`readstream stream is not readable: ${connectionInformation.dataSocket.remoteAddress}:${connectionInformation.dataSocket.remotePort}`);
+      //       readStream.destroy();
+      //       connectionInformation.dataSocket.end();
+      //       return;
+      // }
+
+      // readStream.on('error', function (err) {
+      //       console.error(`Read stream error: ${filePath}`);
+      //       writeStream.destroy();
+      //       connectionInformation.dataSocket.end();
+      // });
+
+
+      writeStream.on('finish', function () {
+            // readStream.close();
+            connectionInformation.dataSocket.end();
+      });
+
+      console.log("150 File status okay; about to open dataConnection");
+
+      connectionInformation.dataSocket.on('end', () => {
+            connectionInformation.connectionSocket.write('226 Transfer complete.\n');
+            // fileStream.end();
+            console.log("end transfert");
+
+      });
+
+      connectionInformation.dataSocket.on('data', (data) => {
+            writeStream.write(data);
+            // connectionInformation.dataSocket.write(data);
+            // console.log(`Received ${data.length} bytes of data.`);
+            // console.log(`stor received data \n${data}`);
+      });
+
 }
 
 // a changer car la on ne veut que un dir pas un file
@@ -45,6 +94,11 @@ function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
       dir = dir.split("/").filter(str => str.trim() !== "");; // psq si dir commence par "" apres split on a le 1er elt vide
       let pathArr = path.split("/").filter(str => str.trim() !== "");  //faire un msg si "/" au debut de path --> error
+
+      const fileName = pathArr.pop();
+      console.log(`filename ${fileName}`);
+
+
 
 
       for (str of pathArr) {
@@ -67,6 +121,14 @@ function isOnScopeFun(rootDir, currentDir, path) {
       dir = "/" + dir.join("/");
       dir = rootDir + dir;
       finalPath = dir;
+      console.log(`final path ${finalPath}`);
+      // console.log(finalPath.trim().charAt(finalPath.length -1));
+      if (finalPath.trim().charAt(finalPath.length - 1) == "/") {
+            finalFileDir = finalPath + fileName.toString();
+      }
+      else {
+            finalFileDir = finalPath + "/" + fileName.toString();
+      }
       // console.log(`finalPath ${finalPath}`);
 };
 

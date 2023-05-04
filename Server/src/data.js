@@ -42,12 +42,12 @@ function handleUserCommand(connectionInformation, data) {
   else if (command === 'TYPE') {
     const data = dataSplit[1].trim().toString();
     if (data == "I") {
-      // connectionInformation.type="I";
+      connectionInformation.type="I";
       socket.write('200 Type set to Binary.\r\n');
       // socket.write('550 Only ASCII mode is supported by this server.\r\n');
     }
     else if (data == "A") {
-      // connectionInformation.type="A";
+      connectionInformation.type="A";
       socket.write('200 Type set to A.\r\n');
     }
   }
