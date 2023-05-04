@@ -65,7 +65,7 @@ function handleUserCommand(connectionInformation, data) {
   }
   else if (command === "EPRT") {
     const data =  dataSplit[1].trim().toString().trim();
-    commands.myCommands["PORT"].callback(connectionInformation,data);
+    commands.myCommands["EPRT"].callback(connectionInformation,data);
   }
   else if (command === "RETR") {
     let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();

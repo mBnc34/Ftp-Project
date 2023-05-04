@@ -19,8 +19,8 @@
                   dataSocket: null,
                   type: 'A',
                   isConnected: false,
-                  rootDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory",
-                  currentDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory"
+                  rootDirectory: "Server/RootDirectory",
+                  currentDirectory: "Server/RootDirectory"
             };
             connectionInformation.connectionSocket = socket;
 

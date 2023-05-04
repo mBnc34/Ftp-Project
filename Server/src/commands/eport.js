@@ -2,19 +2,19 @@ const { log } = require('console');
 const commands = require('../command.js');
 const net = require('net');
 
-const name = 'PORT';
-const helpText = 'PORT <sp> <host-port>';
+const name = 'EPRT';
+const helpText = 'EPRT <sp> <host-port>'; //a changer plus tard
 const description = 'To initiate any data transference in active mode';
 
 let localAddress = 'localhost';
 // let localAddress = '172.18.80.157';
 
 
-function portFunction(connectionInformation, data) {
+function eprtFunction(connectionInformation, data) {
       const dataArr = data.split('|').filter(str => str.trim() !== "");;
       const addr = dataArr[1];
       const port = dataArr[2];
-      
+      console.log(`eport : ${port}`);
       connectionInformation.connectionSocket.write('200 PORT  command sucess\r\n');
 
       connectionInformation.dataSocket = net.createConnection({ port: port, host: addr }, () => {
@@ -44,4 +44,4 @@ function portFunction(connectionInformation, data) {
     
 
 // console.log(`test socket ${socket.remotePort}`);
-commands.add(name, helpText, description, portFunction);
+commands.add(name, helpText, description, eprtFunction);
