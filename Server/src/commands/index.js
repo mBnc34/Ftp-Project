@@ -6,3 +6,4 @@ require('./list.js');
 require('./cwd.js');
 require('./retr.js');
 require('./pasv.js');
+require('./stor.js');

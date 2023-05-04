@@ -67,6 +67,10 @@ function handleUserCommand(connectionInformation, data) {
     let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
     commands.myCommands["RETR"].callback(connectionInformation,path);
   }
+  else if (command === "STOR") {
+    let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+    commands.myCommands["STOR"].callback(connectionInformation,path);
+  }
   else {
     socket.write('500 Invalid command.\r\n');
   }
