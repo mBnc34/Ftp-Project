@@ -59,7 +59,7 @@ function handleUserCommand(connectionInformation, data) {
     let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
     commands.myCommands["CWD"].callback(connectionInformation, path);
   }
-  else if (command === "PORT") {
+  else if (command === "PORT" || command === "EPRT") {
     const data =  dataSplit[1].trim().toString().trim();
     commands.myCommands["PORT"].callback(connectionInformation,data);
   }

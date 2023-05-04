@@ -20,7 +20,7 @@ function portFunction(connectionInformation, data) {
       connectionInformation.dataSocket = net.createConnection({ port: port, host: addr }, () => {
         console.log('Socket de données (via PORT) créé avec succès');
         // console.log(`local addr : ${connectionInformation.dataSocket.}`);
-        // console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);
+        console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);
       });
 
       connectionInformation.dataSocket.once('connect', () => {
