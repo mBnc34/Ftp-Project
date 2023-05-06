@@ -1,4 +1,3 @@
-const { log } = require('console');
 const commands = require('../command.js');
 const net = require('net');
 

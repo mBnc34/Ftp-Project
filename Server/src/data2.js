@@ -3,7 +3,7 @@ const fs = require('fs');
 // const net = require('net');
 
 const commands = require('./command');
-require('../commands/index.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
+require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
 console.log(commands.myCommands);
 
 // get : RETR
@@ -14,12 +14,12 @@ function handleUserCommand(connectionInformation, data) {
 
       const socket = connectionInformation.connectionSocket;
       const user = connectionInformation.user;
-
       const dataSplit = data.toString().split(" ");
       const command = dataSplit[0].trim();
       // console.log("command : " + command);
       //apres au lieu de if / else if etc
       // soit faire un case soit utilliser un objet
+      // if (dataSplit.length > 1) data = dataSplit[1];
 
       switch (command) {
             case "OPTS":
@@ -43,6 +43,13 @@ function handleUserCommand(connectionInformation, data) {
                   const dataPort = dataSplit[1].trim().toString().trim();
                   commands.myCommands["PORT"].callback(connectionInformation, dataPort);
                   break;
+            case "EPRT":
+                  const dataEprt = dataSplit[1].trim().toString().trim();
+                  commands.myCommands["EPRT"].callback(connectionInformation, dataEprt);
+                  break;
+            // case "PASV":
+            //       commands.myCommands["PASV"].callback(connectionInformation);
+            //       break;
             case "LIST":
             case "NLST":
                   const path = ""; //pour le moment
@@ -52,19 +59,27 @@ function handleUserCommand(connectionInformation, data) {
                   let retrPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
                   commands.myCommands["RETR"].callback(connectionInformation, retrPath);
                   break;
+            case "STOR":
+                  let storPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  commands.myCommands["STOR"].callback(connectionInformation, storPath);
+                  break;
             case "CWD":
                   let cwdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
                   commands.myCommands["CWD"].callback(connectionInformation, cwdPath);
                   break;
+            case "MKD":
+                  let mkdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  commands.myCommands["MKD"].callback(connectionInformation, mkdPath);
+                  break;
             case "TYPE":
                   const dataType = dataSplit[1].trim().toString();
                   if (dataType == "I") {
-                        // connectionInformation.type="I";
+                        connectionInformation.type = "I";
                         socket.write('200 Type set to Binary.\r\n');
                         // socket.write('550 Only ASCII mode is supported by this server.\r\n');
                   }
                   else if (dataType == "A") {
-                        // connectionInformation.type="A";
+                        connectionInformation.type = "A";
                         socket.write('200 Type set to A.\r\n');
                   }
                   break;

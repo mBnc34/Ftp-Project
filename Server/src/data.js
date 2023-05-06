@@ -3,7 +3,7 @@ const fs = require('fs');
 // const net = require('net');
 
 const commands = require('./command');
-require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
+// require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
 console.log(commands.myCommands);
 
 // get : RETR
@@ -58,6 +58,10 @@ function handleUserCommand(connectionInformation, data) {
   else if (command === 'CWD' ) {
     let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
     commands.myCommands["CWD"].callback(connectionInformation, path);
+  }
+  else if (command === 'MKD' ) {
+    let path = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+    commands.myCommands["MKD"].callback(connectionInformation, path);
   }
   else if (command === "PORT") {
     const data =  dataSplit[1].trim().toString().trim();
