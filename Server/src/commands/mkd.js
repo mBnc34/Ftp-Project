@@ -38,7 +38,7 @@ function mkdFunction(connectionInformation, path) {
             return;
       }
 
-      fs.mkdir(finalFileDir, (err   )=> {
+      fs.mkdir(finalFileDir, (err)=> {
             if (err) {
                   console.log(err);
             } else {
