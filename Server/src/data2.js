@@ -73,7 +73,7 @@ function handleUserCommand(connectionInformation, data) {
                   break;
             case "RMD":
                   let rmdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
-                  commands.myCommands["MKD"].callback(connectionInformation, rmdPath);
+                  commands.myCommands["RMD"].callback(connectionInformation, rmdPath);
                   break;
             case "TYPE":
                   const dataType = dataSplit[1].trim().toString();
