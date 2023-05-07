@@ -10,3 +10,4 @@ require('./stor.js');
 require('./eport.js');
 require('./mkd.js');
 require('./rmd.js');
+require('./dele.js');

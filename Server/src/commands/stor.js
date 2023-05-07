@@ -98,9 +98,6 @@ function isOnScopeFun(rootDir, currentDir, path) {
       const fileName = pathArr.pop();
       console.log(`filename ${fileName}`);
 
-
-
-
       for (str of pathArr) {
             if (str === "." || str === "..") {
                   if (dir.length == 0) {

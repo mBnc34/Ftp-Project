@@ -41,6 +41,7 @@ function mkdFunction(connectionInformation, path) {
       fs.mkdir(finalFileDir, (err)=> {
             if (err) {
                   console.log(err);
+                  connectionInformation.connectionSocket.write("550 + msg\r\n")
             } else {
                   console.log("Repertoire créé avec succés");
                   connectionInformation.connectionSocket.write(`257 ${path} created \r\n`);
