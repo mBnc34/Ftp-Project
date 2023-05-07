@@ -16,6 +16,8 @@ function handleUserCommand(connectionInformation, data) {
       const user = connectionInformation.user;
       const dataSplit = data.toString().split(" ");
       const command = dataSplit[0].trim();
+
+      let filePath;
       // console.log("command : " + command);
       //apres au lieu de if / else if etc
       // soit faire un case soit utilliser un objet
@@ -78,6 +80,11 @@ function handleUserCommand(connectionInformation, data) {
             case "DELE":
                   let delePath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
                   commands.myCommands["DELE"].callback(connectionInformation, delePath);
+                  break;
+            case "RNFR":
+                  let rnfrPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  filePath = rnfrPath; // a utiliser pour rnto
+                  commands.myCommands["RNFR"].callback(connectionInformation, rnfrPath);
                   break;
             case "TYPE":
                   const dataType = dataSplit[1].trim().toString();
