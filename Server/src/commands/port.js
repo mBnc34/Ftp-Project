@@ -5,8 +5,8 @@ const name = 'PORT';
 const helpText = 'PORT <sp> <host-port>';
 const description = 'To initiate any data transference in active mode';
 
-// let localAddress = 'localhost';
-let localAddress = '172.18.80.148';
+let localAddress = 'localhost';
+// let localAddress = '172.18.80.148';
 let localPort = 58404;
 
 
@@ -18,7 +18,7 @@ function portFunction(connectionInformation, data) {
       
       // connectionInformation.connectionSocket.write('200 PORT  command sucess\r\n');
 
-      connectionInformation.dataSocket = net.createConnection({ port: clientPort, host: addr, localAddress: localAddress, localPort:localPort}, () => {
+      connectionInformation.dataSocket = net.createConnection({ port: clientPort, host: addr}, () => {
         console.log('Socket de données (via PORT) créé avec succès');
         // console.log(`local addr : ${connectionInformation.dataSocket.}`);
         console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);

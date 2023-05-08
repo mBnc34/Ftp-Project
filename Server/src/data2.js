@@ -98,6 +98,9 @@ function handleUserCommand(connectionInformation, data) {
                         socket.write('200 Type set to A.\r\n');
                   }
                   break;
+            case "QUIT":
+                  commands.myCommands["QUIT"].callback(connectionInformation);
+                  break;
             default:
                   socket.write('500 Invalid command.\r\n');
                   break;
