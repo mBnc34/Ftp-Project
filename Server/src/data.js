@@ -19,9 +19,8 @@ function handleUserCommand(connectionInformation, data) {
 
       let filePath;
       // console.log("command : " + command);
-      //apres au lieu de if / else if etc
-      // soit faire un case soit utilliser un objet
       // if (dataSplit.length > 1) data = dataSplit[1];
+      // else message d'erreur : need data
 
       switch (command) {
             case "OPTS":
@@ -83,8 +82,11 @@ function handleUserCommand(connectionInformation, data) {
                   break;
             case "RNFR":
                   let rnfrPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
-                  // connectionInformation.rnfrPath = rnfrPath; // a utiliser pour rnto
                   commands.myCommands["RNFR"].callback(connectionInformation, rnfrPath);
+                  break;
+            case "RNTO":
+                  let newName = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
+                  commands.myCommands["RNTO"].callback(connectionInformation, newName);
                   break;
             case "TYPE":
                   const dataType = dataSplit[1].trim().toString();

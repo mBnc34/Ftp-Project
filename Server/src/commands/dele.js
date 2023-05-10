@@ -44,7 +44,7 @@ function deleFunction(connectionInformation, path) {
 
 function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
-      dir = dir.split("/").filter(str => str.trim() !== "");; // psq si dir commence par "" apres split on a le 1er elt vide
+      dir = dir.split("/").filter(str => str.trim() !== ""); // psq si dir commence par "" apres split on a le 1er elt vide
       let pathArr = path.split("/").filter(str => str.trim() !== "");  //faire un msg si "/" au debut de path --> error
 
       for (str of pathArr) {

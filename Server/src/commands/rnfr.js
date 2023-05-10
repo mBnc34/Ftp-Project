@@ -11,7 +11,6 @@ let finalPath;
 function rnfrFunction(connectionInformation, path) {
       const rootDir = connectionInformation.rootDirectory;
       let currentDir;
-      let isFind;
       if (path.charAt(0) == "/") {
             currentDir = rootDir;
       }
@@ -22,17 +21,15 @@ function rnfrFunction(connectionInformation, path) {
       if (!isOnScope) {
             console.log("chemin inexistant pour le client");
             connectionInformation.connectionSocket.write("550 + msg\r\n");
-            isFind = false;
             return;
       }
       else if (!(fs.existsSync(finalPath))) {
             console.log(`${finalPath} n'existe pas `);
             connectionInformation.connectionSocket.write("550 + msg\r\n");
-            isFind = false;
             return;
       };
 
-      connectionInformation.rnfrPath = path;
+      connectionInformation.rnfrPath = finalPath;
       connectionInformation.connectionSocket.write("250 + msg\r\n");
       // return true;
 };

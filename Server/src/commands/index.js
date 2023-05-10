@@ -13,3 +13,4 @@ require('./rmd.js');
 require('./dele.js');
 require('./quit.js');
 require('./rnfr.js');
+require('./rnto.js');
