@@ -11,9 +11,12 @@ let finalPath;
 
 function listFunction(connectionInformation, path) {
 
-      while (connectionInformation.dataSocket == null) {
-            
-      }
+      //je dois créé un gestion d'erreur si dataSocket est nul mais pas avec le if en dessous
+      // car pour l'instant il ya pas de bug car le dataSocket se créé en meme temps que l'appel
+      // mais par exxemple si dans pasv j'enleve le dataSocket=socket
+      // j'aurais une erreur à gérer
+      // faire un thy or something like that pour eviter le write on undefined
+
 
       // if (connectionInformation.dataSocket == null){
       //       connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
