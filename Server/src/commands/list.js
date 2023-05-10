@@ -67,6 +67,8 @@ function listFunction(connectionInformation, path) {
                         });
             } catch (error) {
                   console.log(error);
+                  connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+                  return;
             }
             // connectionInformation.dataSocket.write(response, 'ascii', () => {
             //       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
