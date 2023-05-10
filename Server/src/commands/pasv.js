@@ -10,7 +10,7 @@ let localAddress = '127.0.0.1';
 let localPort = 52222;
 let socketTest;
 
-function pasvFunction(connectionInformation) {
+ function pasvFunction(connectionInformation) {
       console.log("pasvTest");
 
       // connectionInformation.passiveServer = net.createServer({

@@ -11,11 +11,14 @@ let finalPath;
 
 function listFunction(connectionInformation, path) {
 
-
-      if (connectionInformation.dataSocket == null){
-            connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
-            return;
+      while (connectionInformation.dataSocket == null) {
+            
       }
+
+      // if (connectionInformation.dataSocket == null){
+      //       connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+      //       return;
+      // }
 
       const rootDir = connectionInformation.rootDirectory;
       let currentDir;
