@@ -60,10 +60,18 @@ function listFunction(connectionInformation, path) {
             //       connectionInformation.dataSocket.end();
             // });
             // console.log(`response : \n${response}`);
-            connectionInformation.dataSocket.write(response, 'ascii', () => {
-                  connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
-                  connectionInformation.dataSocket.end();
-            });
+            try {
+                  connectionInformation.dataSocket.write(response, 'ascii', () => {
+                              connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+                              connectionInformation.dataSocket.end();
+                        });
+            } catch (error) {
+                  console.log(error);
+            }
+            // connectionInformation.dataSocket.write(response, 'ascii', () => {
+            //       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+            //       connectionInformation.dataSocket.end();
+            // });
       });
       // connectionInformation.currentDirectory = rootDir;// on reinitialise
       connectionInformation.connectionSocket.write('150 transfer in progress\r\n');
