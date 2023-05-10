@@ -39,6 +39,7 @@ function portFunction(connectionInformation, data) {
     
       connectionInformation.dataSocket.on('close', () => {
         console.log(`Data Connection closed with ${addr}:${clientPort}`);
+        // connectionInformation.dataSocket = null;
       });
 
     };

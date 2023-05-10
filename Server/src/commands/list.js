@@ -8,7 +8,15 @@ const description = 'List all files in a specified directory';
 let isOnScope;
 let finalPath;
 
+
 function listFunction(connectionInformation, path) {
+
+
+      if (connectionInformation.dataSocket == null){
+            connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+            return;
+      }
+
       const rootDir = connectionInformation.rootDirectory;
       let currentDir;
       if (path.charAt(0) == "/") {

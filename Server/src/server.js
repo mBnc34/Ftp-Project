@@ -16,11 +16,13 @@
             var connectionInformation = {
                   user: null,
                   connectionSocket: null,
+                  passiveServer: null,
                   dataSocket: null,
                   type: 'A',
                   isConnected: false,
                   rootDirectory: "Server/RootDirectory",
-                  currentDirectory: "Server/RootDirectory"
+                  currentDirectory: "Server/RootDirectory",
+                  rnfrPath: ""
             };
             connectionInformation.connectionSocket = socket;
 

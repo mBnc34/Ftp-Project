@@ -11,4 +11,5 @@ require('./eport.js');
 require('./mkd.js');
 require('./rmd.js');
 require('./dele.js');
-require('./quit.js')
+require('./quit.js');
+require('./rnfr.js');

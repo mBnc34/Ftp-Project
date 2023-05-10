@@ -49,9 +49,9 @@ function handleUserCommand(connectionInformation, data) {
                   const dataEprt = dataSplit[1].trim().toString().trim();
                   commands.myCommands["EPRT"].callback(connectionInformation, dataEprt);
                   break;
-            // case "PASV":
-            //       commands.myCommands["PASV"].callback(connectionInformation);
-            //       break;
+            case "PASV":
+                  commands.myCommands["PASV"].callback(connectionInformation);
+                  break;
             case "LIST":
             case "NLST":
                   const path = ""; //pour le moment
@@ -83,7 +83,7 @@ function handleUserCommand(connectionInformation, data) {
                   break;
             case "RNFR":
                   let rnfrPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
-                  filePath = rnfrPath; // a utiliser pour rnto
+                  // connectionInformation.rnfrPath = rnfrPath; // a utiliser pour rnto
                   commands.myCommands["RNFR"].callback(connectionInformation, rnfrPath);
                   break;
             case "TYPE":
