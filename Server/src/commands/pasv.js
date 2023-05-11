@@ -5,10 +5,9 @@ const name = 'PASV';
 const helpText = 'PASV';
 const description = 'To use passive mode';
 
-let localAddress = '127.0.0.1';
-// let localAddress = '172.18.80.129';
+// let localAddress = '127.0.0.1';
+let localAddress = '172.18.80.164';
 let localPort = 52222;
-let socketTest;
 
  function pasvFunction(connectionInformation) {
       console.log("pasvTest");
@@ -24,7 +23,7 @@ let socketTest;
       });
 
       // // const localPort = passiveServer.address().port;
-
+      // console.log(`passive addres : ${serverAddress}`);
       const serverAddress = localAddress.replace(/\./g, ',');
       let port1 = Math.floor(localPort / 256);
       let port2 = Math.floor(localPort % 256);
@@ -49,7 +48,7 @@ let socketTest;
             dataSocket.on('close', () => {
                   console.log("client disconnected");
             })
-            // connectionInformation.dataSocket = socketTest;
+
       });
 
       passiveServer.listen(localPort);
