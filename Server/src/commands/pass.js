@@ -2,7 +2,7 @@ const commands = require('../command.js');
 const bcrypt = require('bcrypt');
 
 const fs = require('fs');
-const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/src/Users/users.json';
+const usersFile = 'Server/src/Users/users.json';
 const rawData = fs.readFileSync(usersFile);
 const users = JSON.parse(rawData);
 

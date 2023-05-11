@@ -8,7 +8,21 @@ const description = 'List all files in a specified directory';
 let isOnScope;
 let finalPath;
 
+
 function listFunction(connectionInformation, path) {
+
+      //je dois créé un gestion d'erreur si dataSocket est nul mais pas avec le if en dessous
+      // car pour l'instant il ya pas de bug car le dataSocket se créé en meme temps que l'appel
+      // mais par exxemple si dans pasv j'enleve le dataSocket=socket
+      // j'aurais une erreur à gérer
+      // faire un thy or something like that pour eviter le write on undefined
+
+
+      // if (connectionInformation.dataSocket == null){
+      //       connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+      //       return;
+      // }
+
       const rootDir = connectionInformation.rootDirectory;
       let currentDir;
       if (path.charAt(0) == "/") {
@@ -46,10 +60,20 @@ function listFunction(connectionInformation, path) {
             //       connectionInformation.dataSocket.end();
             // });
             // console.log(`response : \n${response}`);
-            connectionInformation.dataSocket.write(response, 'ascii', () => {
-                  connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
-                  connectionInformation.dataSocket.end();
-            });
+            try {
+                  connectionInformation.dataSocket.write(response, 'ascii', () => {
+                              connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+                              connectionInformation.dataSocket.end();
+                        });
+            } catch (error) {
+                  console.log(error);
+                  connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+                  return;
+            }
+            // connectionInformation.dataSocket.write(response, 'ascii', () => {
+            //       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+            //       connectionInformation.dataSocket.end();
+            // });
       });
       // connectionInformation.currentDirectory = rootDir;// on reinitialise
       connectionInformation.connectionSocket.write('150 transfer in progress\r\n');

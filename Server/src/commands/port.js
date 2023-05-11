@@ -5,35 +5,41 @@ const name = 'PORT';
 const helpText = 'PORT <sp> <host-port>';
 const description = 'To initiate any data transference in active mode';
 
-let localAddress = '127.0.0.1';
-// let localAddress = '172.18.80.129';
+let localAddress = 'localhost';
+// let localAddress = '172.18.80.148';
+let localPort = 58404;
 
 
 function portFunction(connectionInformation, data) {
       const dataArr = data.split(',');
       const addr = dataArr.slice(0, 4).join('.');
-      const port = parseInt(dataArr[4]) * 256 + parseInt(dataArr[5]);
+      const clientPort = parseInt(dataArr[4]) * 256 + parseInt(dataArr[5]);
+      console.log(`addr:port ${addr}:${clientPort}`);
       
-      connectionInformation.dataSocket = net.createConnection({ port: port, host: addr, localAddress: localAddress, localPort: 20000  }, () => {
+      // connectionInformation.connectionSocket.write('200 PORT  command sucess\r\n');
+
+      connectionInformation.dataSocket = net.createConnection({ port: clientPort, host: addr}, () => {
         console.log('Socket de données (via PORT) créé avec succès');
-        // console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);
+        // console.log(`local addr : ${connectionInformation.dataSocket.}`);
+        console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);
       });
 
-      connectionInformation.dataSocket.once('connect', () => {
+      connectionInformation.dataSocket.on('connect', () => {
         console.log(`test addr:port ${connectionInformation.dataSocket.remotePort}`);
-        connectionInformation.connectionSocket.write('200 PORT  command sucess\r\n');
+        connectionInformation.connectionSocket.write('200 PORT command sucess\r\n');
       });
 
-      connectionInformation.dataSocket.on('data', (data) => {
-        console.log(`Received data: ${data}`);
-      });
+      // connectionInformation.dataSocket.on('data', (data) => {
+      //   console.log(`Received data: ${data}`); //psq sinon tu vas tt recevoir
+      // });
     
       connectionInformation.dataSocket.on('error', (err) => {
-        console.log(`Error connecting to ${addr}:${port}: ${err.message}`);
+        console.log(`Error connecting to ${addr}:${clientPort}: ${err.message}`);
       });
     
       connectionInformation.dataSocket.on('close', () => {
-        console.log(`Data Connection closed with ${addr}:${port}`);
+        console.log(`Data Connection closed with ${addr}:${clientPort}`);
+        // connectionInformation.dataSocket = null;
       });
 
     };

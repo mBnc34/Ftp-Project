@@ -1,11 +1,11 @@
       const net = require('net');
       // var readline = require('readline');
       const { handleUserCommand } = require('./data.js');
-      require('./commands/INDEX.js');//pour remplir toutes les commandes
+      // require('./commands/INDEX.js');//pour remplir toutes les commandes
 
       const PORT = 21;
-      const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
-      // const HOST = '172.18.80.129';
+      // const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
+      const HOST = '172.18.80.164';
       const server = net.createServer();
 
       // le rootDirectory : le point d'entrée du client (ne peut pas aller avant ca). --> a limité selon les permissions
@@ -16,11 +16,13 @@
             var connectionInformation = {
                   user: null,
                   connectionSocket: null,
+                  passiveServer: null,
                   dataSocket: null,
                   type: 'A',
                   isConnected: false,
-                  rootDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory",
-                  currentDirectory: "C:/Users/mouss/Desktop/Ftp-Project/Server/RootDirectory"
+                  rootDirectory: "Server/RootDirectory",
+                  currentDirectory: "Server/RootDirectory",
+                  rnfrPath: ""
             };
             connectionInformation.connectionSocket = socket;
 
@@ -37,3 +39,4 @@
       });
 
       server.listen(PORT, HOST, () => console.log('Server FTP launched on port 21'));
+      // server.listen(PORT,  () => console.log('Server FTP launched on port 21'));
