@@ -1,7 +1,7 @@
 const commands = require('../command.js');
 const fs = require('fs');
 
-// test pull
+
 const name = 'STOR';
 const helpText = 'STOR <sp> pathname';
 const description = 'To upload a specified file';
@@ -9,7 +9,6 @@ const description = 'To upload a specified file';
 let isOnScope;
 let finalPath;
 let finalFileDir;
-
 
 /*
 Probleme restant --> si un fichier a des espaces alors on perd de l'information du nom et surtout l'extension
@@ -27,37 +26,28 @@ function storFunction(connectionInformation, path) {
       };
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
-            console.log("chemin inexistant pour le client");
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log("non-existant path for the user");
+            connectionInformation.connectionSocket.write("550 File not found\r\n");
             return;
       };
       if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
-            console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n")
+            console.log(`${finalPath}doesn't exist or is not directory`);
+            connectionInformation.connectionSocket.write("550 file action not taken\r\n");
             return;
       };
 
       // let transferMode;
       // if (connectionInformation.type == "A") transferMode = 'ascii'
       // else transferMode = 'binary'
-      // console.log(transferMode);
 
-      // fs.createWriteStream(finalFileDir);
       const writeStream = fs.createWriteStream(finalFileDir);
-      // const readStream = connectionInformation.dataSocket;
 
       if (!writeStream.writable) {
             console.error(`write stream is not writable: ${finalFileDir}`);
+            // readStream.destroy();
             connectionInformation.dataSocket.end();
             return;
-      }
-
-      // if (!readStream.readable) {
-      //       console.error(`readstream stream is not readable: ${connectionInformation.dataSocket.remoteAddress}:${connectionInformation.dataSocket.remotePort}`);
-      //       readStream.destroy();
-      //       connectionInformation.dataSocket.end();
-      //       return;
-      // }
+      };
 
       // readStream.on('error', function (err) {
       //       console.error(`Read stream error: ${filePath}`);
@@ -67,7 +57,7 @@ function storFunction(connectionInformation, path) {
 
 
       writeStream.on('finish', function () {
-            // readStream.close();
+            // writetream.close();
             connectionInformation.dataSocket.end();
       });
 
@@ -89,10 +79,10 @@ function storFunction(connectionInformation, path) {
 
 }
 
-// a changer car la on ne veut que un dir pas un file
+
 function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
-      dir = dir.split("/").filter(str => str.trim() !== "");; // psq si dir commence par "" apres split on a le 1er elt vide
+      dir = dir.split("/").filter(str => str.trim() !== ""); // psq si dir commence par "" apres split on a le 1er elt vide
       let pathArr = path.split("/").filter(str => str.trim() !== "");  //faire un msg si "/" au debut de path --> error
 
       const fileName = pathArr.pop();
@@ -101,7 +91,6 @@ function isOnScopeFun(rootDir, currentDir, path) {
       for (str of pathArr) {
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        // console.log("chemin non autorisé");
                         finalPath = null;
                         isOnScope = false;
                         return;
@@ -119,14 +108,13 @@ function isOnScopeFun(rootDir, currentDir, path) {
       dir = rootDir + dir;
       finalPath = dir;
       console.log(`final path ${finalPath}`);
-      // console.log(finalPath.trim().charAt(finalPath.length -1));
       if (finalPath.trim().charAt(finalPath.length - 1) == "/") {
             finalFileDir = finalPath + fileName.toString();
       }
       else {
             finalFileDir = finalPath + "/" + fileName.toString();
       }
-      // console.log(`finalPath ${finalPath}`);
+
 };
 
 commands.add(name, helpText, description, storFunction);

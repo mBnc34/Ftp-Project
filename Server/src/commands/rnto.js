@@ -20,7 +20,7 @@ function rntoFunction(connectionInformation, newName) {
       fs.rename(connectionInformation.rnfrPath,newPath, (err)=> {
             if (err) {
                   console.log(err);
-                  connectionInformation.connectionSocket.write("550 + msg\r\n")
+                  connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
             } else {
                   console.log("file rename succesfully");
                   connectionInformation.rnfrPath = '';

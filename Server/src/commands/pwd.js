@@ -1,7 +1,5 @@
 const commands = require('../command.js');
 
-// const fs = require('fs');
-
 const name = 'PWD';
 const helpText = 'PWD';
 const description = 'Get the path to the working directory';

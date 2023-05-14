@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const name = 'CWD';
 const helpText = 'CWD <sp> <pathname>';
-const description = 'To change the workinng directory';
+const description = 'To change the working directory';
 
 let isOnScope;
 let finalPath;
@@ -18,27 +18,26 @@ function cwdFunction(connectionInformation, path) {
       else {
             currentDir = connectionInformation.currentDirectory;
       };
-      // psq si "/" en premier ca veut dire que le path commence à la racine et pas au current dir
+
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
-            console.log("chemin inexistant pour le client");
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log("non-existant path for the user");
+            connectionInformation.connectionSocket.write("550 File not found\r\n");
             return;
       };
       if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
-            console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log(`${finalPath}doesn't exist or is not directory`);
+            connectionInformation.connectionSocket.write("550 file action not taken\r\n");
             return;
       };
 
       // else
-      // console.log(`current dir apres cwd ${finalPath}`);
       connectionInformation.currentDirectory = finalPath; // pour LIST et reinitialiser apres
       connectionInformation.connectionSocket.write("250 Directory succesfully changed\r\n");
 
 };
 
-// cf list file to understand this function
+
 function isOnScopeFun(rootDir, currentDir, path) {
 
       let dir = currentDir.replace(rootDir, ""); // get the path seen by the client
@@ -46,10 +45,8 @@ function isOnScopeFun(rootDir, currentDir, path) {
       let pathArr = path.split("/").filter(str => str.trim() !== "");
 
       for (str of pathArr) {
-            // console.log(`str : ${str}`);
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        // console.log("chemin non autorisé");
                         finalPath = null;
                         isOnScope = false;
                         return;
