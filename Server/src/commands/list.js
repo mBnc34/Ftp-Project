@@ -53,17 +53,15 @@ function listFunction(connectionInformation, path) {
                         connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                         connectionInformation.dataSocket.end();
                   });
+                
             } catch (error) {
                   console.log(error);
                   connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
                   return;
             }
-            // connectionInformation.dataSocket.write(response, 'ascii', () => {
-            //       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
-            //       connectionInformation.dataSocket.end();
-            // });
+           
       });
-      // connectionInformation.currentDirectory = rootDir;// on reinitialise
+    
       connectionInformation.connectionSocket.write('150 File status okay\r\n');
 };
 

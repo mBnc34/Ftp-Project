@@ -38,7 +38,8 @@ function retrFunction(connectionInformation, path) {
       
       console.log(`final path avant filestream [${finalPath}]`);
       // add try-catch
-      const fileStream = fs.createReadStream(finalPath); // need to specify the mode
+      const fileStream = fs.createReadStream(finalPath, {encoding: transferMode}); // need to specify the mode
+      // const fileStream = fs.createReadStream(finalPath); // need to specify the mode
       fileStream.pipe(connectionInformation.dataSocket);
       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
 };
