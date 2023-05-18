@@ -44,24 +44,27 @@ function listFunction(connectionInformation, path) {
             }
 
             let response = formatList(finalPath, files);
-            // ports.socket.write(response, 'binary', () => {
-            //       connectionInformation.dataSocket.end();
-            // });
+            let binaryData = Buffer.from(response, 'binary');
+            
+            console.log("binarydata en buffer\n" + binaryData.toString('hex'));
+            binaryData = binaryData.toString();
+            console.log(`binarydata en string \n${binaryData}`);
             // console.log(`response : \n${response}`);
             try {
-                  connectionInformation.dataSocket.write(response, 'ascii', () => {
+                  connectionInformation.dataSocket.write(binaryData, () => {
                         connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                         connectionInformation.dataSocket.end();
                   });
-                
+
             } catch (error) {
                   console.log(error);
                   connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+                  connectionInformation.dataSocket.end();
                   return;
             }
-           
+
       });
-    
+
       connectionInformation.connectionSocket.write('150 File status okay\r\n');
 };
 
