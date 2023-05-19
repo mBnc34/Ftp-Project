@@ -71,9 +71,9 @@ function handleUserCommand(connectionInformation, data) {
                   const dataEprt = dataSplit[1].trim().toString().trim();
                   commands.myCommands["EPRT"].callback(connectionInformation, dataEprt);
                   break;
-            case "PASV":
-                  commands.myCommands["PASV"].callback(connectionInformation);
-                  break;
+            // case "PASV":
+            //       commands.myCommands["PASV"].callback(connectionInformation);
+            //       break;
             case "LIST":
             case "NLST":
                   const path = ""; //pour le moment
