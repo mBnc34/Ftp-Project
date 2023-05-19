@@ -29,12 +29,12 @@ let localPort = 52222;
 
 
       passiveServer.once('connection', (dataSocket) => {
-            // console.log("inside on connection");
+            console.log("inside on connection");
             connectionInformation.dataSocket = dataSocket;
             console.log(`Data socket connected`);
 
             dataSocket.on('end', () => {
-                  // console.log(`Data socket disconnected`);
+                  console.log(`Data socket disconnected`);
                   passiveServer.close(); //it's like the server can have juste one socket (the client for the data operation)
             });
             dataSocket.on('close', () => {

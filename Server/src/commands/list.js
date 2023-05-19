@@ -58,7 +58,7 @@ function listFunction(connectionInformation, path) {
                   console.log(error);
                   connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
                   connectionInformation.dataSocket.end();
-                  return;
+                  // return;
             }
 
       });

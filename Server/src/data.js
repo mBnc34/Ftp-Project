@@ -12,6 +12,29 @@ console.log(commands.myCommands);
 
 function handleUserCommand(connectionInformation, data) {
 
+      let dataSocketPromise;
+
+//   if (/* condition pour vérifier si le mode de connexion est PASSIVE */) {
+//     // Mode de connexion PASSIVE (PASV)
+//     dataSocketPromise = new Promise((resolve, reject) => {
+//       commands.myCommands["PASV"].callback(connectionInformation);
+//       connectionInformation.waitForDataSocket = () => {
+//         if (connectionInformation.dataSocket) {
+//           resolve();
+//         }
+//       };
+//       // Ajoutez éventuellement un délai maximum ici
+//       // delay(10000).then(() => reject(new Error("Timeout"))); par exemple
+//     });
+//   } else {
+//     // Mode de connexion ACTIVE
+//     // Réalisez ici les étapes nécessaires pour établir une connexion active
+//     // et obtenez le dataSocket correspondant
+//     dataSocketPromise = Promise.resolve();
+//   }
+
+     
+
       const socket = connectionInformation.connectionSocket;
       const user = connectionInformation.user;
       const dataSplit = data.toString().split(" ");

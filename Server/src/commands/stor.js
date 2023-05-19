@@ -44,38 +44,38 @@ function storFunction(connectionInformation, path) {
 
       if (!writeStream.writable) {
             console.error(`write stream is not writable: ${finalFileDir}`);
-            // readStream.destroy();
             connectionInformation.dataSocket.end();
             return;
       };
 
-      // readStream.on('error', function (err) {
-      //       console.error(`Read stream error: ${filePath}`);
-      //       writeStream.destroy();
-      //       connectionInformation.dataSocket.end();
-      // });
 
 
       writeStream.on('finish', function () {
-            // writetream.close();
             connectionInformation.dataSocket.end();
       });
 
-      console.log("150 File status okay; about to open dataConnection");
+      // console.log("150 File status okay; about to open dataConnection");
 
-      connectionInformation.dataSocket.on('end', () => {
-            connectionInformation.connectionSocket.write('226 Transfer complete.\n');
-            // fileStream.end();
-            console.log("end transfert");
+      // connectionInformation.dataSocket.on('end', () => {
+      //       connectionInformation.connectionSocket.write('226 Transfer complete.\n');
+      //       // fileStream.end();
+      //       console.log("end transfert");
 
-      });
+      // });
 
-      connectionInformation.dataSocket.on('data', (data) => {
-            writeStream.write(data);
-            // connectionInformation.dataSocket.write(data);
-            // console.log(`Received ${data.length} bytes of data.`);
-            // console.log(`stor received data \n${data}`);
-      });
+      try {
+            connectionInformation.dataSocket.on('data', (data) => {
+                  console.log(`dataStor : ${data}`);
+                  writeStream.write(data);
+                  // connectionInformation.dataSocket.write(data);
+                  // console.log(`Received ${data.length} bytes of data.`);
+                  // console.log(`stor received data \n${data}`);
+            });
+      } catch (error) {
+            console.log(error);
+            // connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+      }
+     
 
 }
 
