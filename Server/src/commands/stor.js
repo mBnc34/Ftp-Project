@@ -65,7 +65,7 @@ function storFunction(connectionInformation, path) {
 
       try {
             connectionInformation.dataSocket.on('data', (data) => {
-                  console.log(`dataStor : ${data}`);
+                  // console.log(`dataStor : ${data}`);
                   writeStream.write(data);
                   // connectionInformation.dataSocket.write(data);
                   // console.log(`Received ${data.length} bytes of data.`);
@@ -73,9 +73,10 @@ function storFunction(connectionInformation, path) {
             });
       } catch (error) {
             console.log(error);
+            return;
             // connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
       }
-     
+      connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
 
 }
 
