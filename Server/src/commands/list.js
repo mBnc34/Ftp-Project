@@ -50,8 +50,8 @@ function listFunction(connectionInformation, path) {
             // console.log(`response : \n${response}`);
             try {
                   connectionInformation.dataSocket.write(response, 'ascii', () => {
-                        connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                         connectionInformation.dataSocket.end();
+                        connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                   });
 
             } catch (error) {
@@ -63,7 +63,7 @@ function listFunction(connectionInformation, path) {
 
       });
 
-      connectionInformation.connectionSocket.write('150 File status okay\r\n');
+      // connectionInformation.connectionSocket.write('150 File status okay\r\n');
 };
 
 

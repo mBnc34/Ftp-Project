@@ -35,11 +35,30 @@ function retrFunction(connectionInformation, path) {
       let transferMode;
       if(connectionInformation.type == "A") transferMode = 'ascii'
       else transferMode = 'binary'
+
+
+      // if (transferMode === 'binary') {
+      //       const fileStream = fs.createReadStream(filePath, { highWaterMark: 1024 }); // Taille du tampon de 1 Ko pour le mode binaire
+    
+      //       fileStream.on('data', function(chunk) {
+      //         client.write(chunk); // Envoyer les données au client
+      //       });
+    
+      //       fileStream.on('end', function() {
+      //         client.end(); // Terminer la transmission du fichier
+      //       });
+      //     } else if (transferMode === 'ascii') {
+      //       const fileData = fs.readFileSync(filePath, 'utf8'); // Lire le fichier en tant que texte
+    
+      //       client.write(fileData); // Envoyer le contenu du fichier au client en tant que texte
+    
+      //       client.end(); // Terminer la transmission du fichier
+      //     }
       
       console.log(`final path avant filestream [${finalPath}]`);
       // add try-catch
-      const fileStream = fs.createReadStream(finalPath, {encoding: transferMode}); // need to specify the mode
-      // const fileStream = fs.createReadStream(finalPath); // need to specify the mode
+      // const fileStream = fs.createReadStream(finalPath, {encoding: transferMode}); // erreur pour le binaire
+      const fileStream = fs.createReadStream(finalPath); // need to choose depending on "type" here it's like automatic
       fileStream.pipe(connectionInformation.dataSocket);
       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
 };
