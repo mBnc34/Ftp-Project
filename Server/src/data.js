@@ -48,21 +48,29 @@ function handleUserCommand(connectionInformation, data) {
                   const dataEprt = dataSplit[1].trim().toString().trim();
                   commands.myCommands["EPRT"].callback(connectionInformation, dataEprt);
                   break;
-            // case "PASV":
-            //       commands.myCommands["PASV"].callback(connectionInformation);
-            //       break;
+            case "PASV":
+                  commands.myCommands["PASV"].callback(connectionInformation);
+                  break;
             case "LIST":
             case "NLST":
                   const path = ""; //pour le moment
-                  commands.myCommands["LIST"].callback(connectionInformation, path);
+                  connectionInformation.dataSocketPromise.then(() => {
+                        console.log("inside list promise");
+                        commands.myCommands["LIST"].callback(connectionInformation, path);
+                  })
+
                   break;
             case "RETR":
                   let retrPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
-                  commands.myCommands["RETR"].callback(connectionInformation, retrPath);
+                  connectionInformation.dataSocketPromise.then(() => {
+                        commands.myCommands["RETR"].callback(connectionInformation, retrPath);
+                  })
                   break;
             case "STOR":
                   let storPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
-                  commands.myCommands["STOR"].callback(connectionInformation, storPath);
+                  connectionInformation.dataSocketPromise.then(() => {
+                        commands.myCommands["STOR"].callback(connectionInformation, storPath);
+                  })
                   break;
             case "CWD":
                   let cwdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();

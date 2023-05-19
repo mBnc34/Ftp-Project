@@ -18,6 +18,7 @@
                   connectionSocket: null,
                   passiveServer: null,
                   dataSocket: null,
+                  dataSocketPromise: null,
                   type: 'A',
                   isConnected: false,
                   rootDirectory: "Server/RootDirectory",

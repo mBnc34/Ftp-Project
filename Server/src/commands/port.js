@@ -11,32 +11,37 @@ let localPort = 58404;
 
 
 function portFunction(connectionInformation, data) {
-      const dataArr = data.split(',');
-      const addr = dataArr.slice(0, 4).join('.');
-      const clientPort = parseInt(dataArr[4]) * 256 + parseInt(dataArr[5]);
-      console.log(`addr:port ${addr}:${clientPort}`);
-      
+  connectionInformation.dataSocketPromise = new Promise((resolve, reject) => {
+    const dataArr = data.split(',');
+    const addr = dataArr.slice(0, 4).join('.');
+    const clientPort = parseInt(dataArr[4]) * 256 + parseInt(dataArr[5]);
+    console.log(`addr:port ${addr}:${clientPort}`);
 
-      connectionInformation.dataSocket = net.createConnection({ port: clientPort, host: addr}, () => {
-        console.log('Socket de données (via PORT) créé avec succès');
-        console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);
-      });
 
-      connectionInformation.dataSocket.on('connect', () => {
-        console.log(`test addr:port ${connectionInformation.dataSocket.remotePort}`);
-        connectionInformation.connectionSocket.write('200 Command okay\r\n');
-      });
+    connectionInformation.dataSocket = net.createConnection({ port: clientPort, host: addr }, () => {
+      console.log('Socket de données (via PORT) créé avec succès');
+      console.log(`addr:port ${connectionInformation.dataSocket.remotePort}`);
+    });
 
-      connectionInformation.dataSocket.on('error', (err) => {
-        console.log(`Error connecting to ${addr}:${clientPort}: ${err.message}`);
-      });
-    
-      connectionInformation.dataSocket.on('close', () => {
-        console.log(`Data Connection closed with ${addr}:${clientPort}`);
-        connectionInformation.dataSocket = null;
-      });
+    connectionInformation.dataSocket.on('connect', () => {
+      console.log(`test addr:port ${connectionInformation.dataSocket.remotePort}`);
+      connectionInformation.connectionSocket.write('200 Command okay\r\n');
+      resolve();
+    });
 
-    };
-    
+    connectionInformation.dataSocket.on('error', (err) => {
+      console.log(`Error connecting to ${addr}:${clientPort}: ${err.message}`);
+    });
+
+    connectionInformation.dataSocket.on('close', () => {
+      console.log(`Data Connection closed with ${addr}:${clientPort}`);
+      connectionInformation.dataSocketPromise = undefined;
+      connectionInformation.dataSocket = null;
+    });
+
+  })
+
+};
+
 
 commands.add(name, helpText, description, portFunction);
