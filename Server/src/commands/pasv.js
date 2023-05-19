@@ -5,13 +5,11 @@ const name = 'PASV';
 const helpText = 'PASV';
 const description = 'To use passive mode';
 
-// let localAddress = '127.0.0.1';
-let localAddress = '172.18.80.164';
+let localAddress = '127.0.0.1';
+// let localAddress = '172.18.80.164';
 let localPort = 52222;
 
  function pasvFunction(connectionInformation) {
-      console.log("pasvTest");
-
  
       let passiveServer = net.createServer({
             port: localPort,
@@ -31,13 +29,13 @@ let localPort = 52222;
 
 
       passiveServer.once('connection', (dataSocket) => {
-            console.log("inside on connection");
+            // console.log("inside on connection");
             connectionInformation.dataSocket = dataSocket;
             console.log(`Data socket connected`);
 
             dataSocket.on('end', () => {
-                  console.log(`Data socket disconnected`);
-                  passiveServer.close();
+                  // console.log(`Data socket disconnected`);
+                  passiveServer.close(); //it's like the server can have juste one socket (the client for the data operation)
             });
             dataSocket.on('close', () => {
                   console.log("client disconnected");

@@ -44,14 +44,12 @@ function listFunction(connectionInformation, path) {
             }
 
             let response = formatList(finalPath, files);
-            let binaryData = Buffer.from(response, 'binary');
+            // let binaryData = Buffer.from(response, 'binary');
+            // binaryData = binaryData.toString('hex');
             
-            console.log("binarydata en buffer\n" + binaryData.toString('hex'));
-            binaryData = binaryData.toString();
-            console.log(`binarydata en string \n${binaryData}`);
             // console.log(`response : \n${response}`);
             try {
-                  connectionInformation.dataSocket.write(binaryData, () => {
+                  connectionInformation.dataSocket.write(response, 'ascii', () => {
                         connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
                         connectionInformation.dataSocket.end();
                   });
