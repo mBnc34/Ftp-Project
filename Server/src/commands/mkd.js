@@ -7,8 +7,8 @@ const description = 'To create a directory';
 
 
 let isOnScope;
-let finalPath; //chemin sans le directoire créé
-let finalFileDir; //chemin avec le directoire créé
+let finalPath; //path of the directory where we will create the new dir
+let finalFileDir; //path of the new dir
 
 
 function mkdFunction(connectionInformation, path) {
@@ -23,27 +23,27 @@ function mkdFunction(connectionInformation, path) {
       };
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
-            console.log("chemin inexistant pour le client");
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log("non-existant path for the user");
+            connectionInformation.connectionSocket.write("550 File not found\r\n");
             return;
       };
       if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
-            console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log(`${finalPath}doesn't exist or is not directory`);
+            connectionInformation.connectionSocket.write("550 file action not taken\r\n");
             return;
       };
       if (fs.existsSync(finalFileDir)){
-            console.log(`${finalFileDir} est déja un chemin existant`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log(`${finalFileDir} already exist`);
+            connectionInformation.connectionSocket.write("550 path already exist\r\n");
             return;
       }
 
       fs.mkdir(finalFileDir, (err)=> {
             if (err) {
                   console.log(err);
-                  connectionInformation.connectionSocket.write("550 + msg\r\n")
+                  connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
             } else {
-                  console.log("Repertoire créé avec succés");
+                  console.log("dir created succesfully");
                   connectionInformation.connectionSocket.write(`257 ${path} created \r\n`);
             }
       })
@@ -53,7 +53,7 @@ function mkdFunction(connectionInformation, path) {
 
 function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
-      dir = dir.split("/").filter(str => str.trim() !== "");; // psq si dir commence par "" apres split on a le 1er elt vide
+      dir = dir.split("/").filter(str => str.trim() !== ""); 
       let pathArr = path.split("/").filter(str => str.trim() !== "");  //faire un msg si "/" au debut de path --> error
 
       const dirName = pathArr.pop();
@@ -62,7 +62,7 @@ function isOnScopeFun(rootDir, currentDir, path) {
       for (str of pathArr) {
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        // console.log("chemin non autorisé");
+
                         finalPath = null;
                         isOnScope = false;
                         return;
@@ -80,14 +80,13 @@ function isOnScopeFun(rootDir, currentDir, path) {
       dir = rootDir + dir;
       finalPath = dir;
       console.log(`final path ${finalPath}`);
-      // console.log(finalPath.trim().charAt(finalPath.length -1));
       if (finalPath.trim().charAt(finalPath.length - 1) == "/") {
             finalFileDir = finalPath + dirName.toString();
       }
       else {
             finalFileDir = finalPath + "/" + dirName.toString();
       }
-      // console.log(`finalPath ${finalPath}`);
+
 };
 
 commands.add(name, helpText, description, mkdFunction);

@@ -20,22 +20,22 @@ function deleFunction(connectionInformation, path) {
       };
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
-            console.log("chemin inexistant pour le client");
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log("non-existant path for the user");
+            connectionInformation.connectionSocket.write("550 File not found\r\n");
             return;
       };
       if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isFile())) {
-            console.log(`${finalPath} n'existe pas ou n'est pas un fichier`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log(`${finalPath}doesn't exist or is not file`);
+            connectionInformation.connectionSocket.write("550 file action not taken\r\n");
             return;
       };
 
       fs.rm(finalPath, (err)=> {
             if (err) {
                   console.log(err);
-                  connectionInformation.connectionSocket.write("550 + msg\r\n")
+                  connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
             } else {
-                  console.log("fichier delete avec succés");
+                  console.log("file deleted with success");
                   connectionInformation.connectionSocket.write(`250 ${path} deleted \r\n`);
             }
       })
@@ -50,7 +50,6 @@ function isOnScopeFun(rootDir, currentDir, path) {
       for (str of pathArr) {
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        // console.log("chemin non autorisé");
                         finalPath = null;
                         isOnScope = false;
                         return;

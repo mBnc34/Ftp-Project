@@ -1,13 +1,11 @@
 const commands = require('../command.js');
 
-// const fs = require('fs');
-
 const name = 'PWD';
 const helpText = 'PWD';
 const description = 'Get the path to the working directory';
 
 function pwdFunction(connectionInformation) {
-      console.log(`current dir :\n ${connectionInformation.currentDirectory}`);
+      // console.log(`current dir :\n ${connectionInformation.currentDirectory}`);
       if(!connectionInformation.isConnected){
             connectionInformation.connectionSocket.write("530 not connected\r\n");
             return;

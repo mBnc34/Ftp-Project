@@ -6,7 +6,7 @@ const helpText = 'RMD <sp> <pathname>';
 const description = 'To remove a directory';
 
 let isOnScope;
-let finalPath; //chemin sans le directoire créé
+let finalPath; 
 
 function rmdFunction(connectionInformation, path) {
       console.log(`path cwd : ${path}`);
@@ -20,13 +20,13 @@ function rmdFunction(connectionInformation, path) {
       };
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
-            console.log("chemin inexistant pour le client");
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log("non-existant path for the user");
+            connectionInformation.connectionSocket.write("550 File not found\r\n");
             return;
       };
       if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
-            console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log(`${finalPath}doesn't exist or is not directory`);
+            connectionInformation.connectionSocket.write("550 file action not taken\r\n");
             return;
       };
 
@@ -34,7 +34,7 @@ function rmdFunction(connectionInformation, path) {
             if (err) {
                   console.log(err);
             } else {
-                  console.log("Repertoire supprimé avec succés");
+                  console.log("dir deleted with succes");
                   connectionInformation.connectionSocket.write(`250 ${path} deleted \r\n`);
             }
       })
@@ -50,10 +50,8 @@ function isOnScopeFun(rootDir, currentDir, path) {
       let pathArr = path.split("/").filter(str => str.trim() !== "");
 
       for (str of pathArr) {
-            // console.log(`str : ${str}`);
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        // console.log("chemin non autorisé");
                         finalPath = null;
                         isOnScope = false;
                         return;

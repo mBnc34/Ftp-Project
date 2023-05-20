@@ -11,18 +11,6 @@ let finalPath;
 
 function listFunction(connectionInformation, path) {
 
-      //je dois créé un gestion d'erreur si dataSocket est nul mais pas avec le if en dessous
-      // car pour l'instant il ya pas de bug car le dataSocket se créé en meme temps que l'appel
-      // mais par exxemple si dans pasv j'enleve le dataSocket=socket
-      // j'aurais une erreur à gérer
-      // faire un thy or something like that pour eviter le write on undefined
-
-
-      // if (connectionInformation.dataSocket == null){
-      //       connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
-      //       return;
-      // }
-
       const rootDir = connectionInformation.rootDirectory;
       let currentDir;
       if (path.charAt(0) == "/") {
@@ -35,48 +23,47 @@ function listFunction(connectionInformation, path) {
 
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
-            console.log("chemin inexistant pour le client");
-            connectionInformation.connectionSocket.write("550 + msg\r\n");
+            console.log("non-existant path for the user");
+            connectionInformation.connectionSocket.write("550 File not found\r\n");
             return;
       };
 
       if (!(fs.existsSync(finalPath) && fs.lstatSync(finalPath).isDirectory())) {
-            console.log(`${finalPath} n'existe pas ou n'est pas un repertoire`);
-            connectionInformation.connectionSocket.write("550 + msg\r\n")
+            console.log(`${finalPath}doesn't exist or is not directory`);
+            connectionInformation.connectionSocket.write("550 file action not taken\r\n");
             return;
       };
       // else
 
-      // console.log(`final path avant readdir : ${finalPath}`);
+
       fs.readdir(finalPath, (err, files) => {
             if (err) {
-                  connectionInformation.connectionSocket.write('425 code erreur + msg \r\n');
+                  connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
                   connectionInformation.dataSocket.end();
                   return;
             }
 
-            let response = formatList(finalPath,files);
-            // ports.socket.write(response, 'binary', () => {
-            //       connectionInformation.dataSocket.end();
-            // });
+            let response = formatList(finalPath, files);
+            // let binaryData = Buffer.from(response, 'binary');
+            // binaryData = binaryData.toString('hex');
+            
             // console.log(`response : \n${response}`);
             try {
                   connectionInformation.dataSocket.write(response, 'ascii', () => {
-                              connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
-                              connectionInformation.dataSocket.end();
-                        });
+                        connectionInformation.dataSocket.end();
+                        connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
+                  });
+
             } catch (error) {
                   console.log(error);
                   connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
-                  return;
+                  connectionInformation.dataSocket.end();
+                  // return;
             }
-            // connectionInformation.dataSocket.write(response, 'ascii', () => {
-            //       connectionInformation.connectionSocket.write('226 Transfer complete\r\n');
-            //       connectionInformation.dataSocket.end();
-            // });
+
       });
-      // connectionInformation.currentDirectory = rootDir;// on reinitialise
-      connectionInformation.connectionSocket.write('150 transfer in progress\r\n');
+
+      // connectionInformation.connectionSocket.write('150 File status okay\r\n');
 };
 
 
@@ -88,24 +75,16 @@ function formatList(pathDir, files) {
             let type;
             if (fs.lstatSync(pathFile).isDirectory()) {
                   type = "d";
-                  // console.log(`${file} is directory`);
             } else if (fs.lstatSync(pathFile).isFile()) {
                   type = "-";
-                  // console.log(`${file} is file`);
             }
-            
-            // Formater chaque fichier avec les informations requises par le protocole FTP
-            // let fileMode = stats.mode.toString(8);
+
             const typeFile = fs.lstatSync(pathFile).isDirectory() ? 'd' : '-';
-            // console.log(`typeFile : ${typeFile}`);
             const name = file.toString();
-            // console.log(`name : ${name}`);
-            const fileSize = stats.size/1000; //pour passer de octet à kOctet
+            const fileSize = stats.size / 1000; //from octet to kO
             const mtime = fs.statSync(pathFile).mtime.toISOString().replace('T', ' ').replace(/\.\d+Z/, '').split(" ").shift();
-            // console.log(`mtime : ${mtime}`);
 
             response += `${type}rw-r--r-- 1 owner group ${fileSize} ${mtime} ${name}\r\n`;
-            // response += `${type} : ${file}  / size : ${fileSize}\r\n`;
       });
 
       return response;
@@ -114,14 +93,14 @@ function formatList(pathDir, files) {
 
 function isOnScopeFun(rootDir, currentDir, path) {
       let dir = currentDir.replace(rootDir, "");
-      dir = dir.split("/").filter(str => str.trim() !== "");; // psq si dir commence par "" apres split on a le 1er elt vide
-      let pathArr = path.split("/").filter(str => str.trim() !== "");  //faire un msg si "/" au debut de path --> error
-     
+      dir = dir.split("/").filter(str => str.trim() !== ""); // psq si dir commence par "" apres split on a le 1er elt vide
+      let pathArr = path.split("/").filter(str => str.trim() !== "");
+
 
       for (str of pathArr) {
             if (str === "." || str === "..") {
                   if (dir.length == 0) {
-                        // console.log("chemin non autorisé");
+                        ;
                         finalPath = null;
                         isOnScope = false;
                         return;
@@ -138,13 +117,8 @@ function isOnScopeFun(rootDir, currentDir, path) {
       dir = "/" + dir.join("/");
       dir = rootDir + dir;
       finalPath = dir;
-      // console.log(`finalPath ${finalPath}`);
+
 };
 
 commands.add(name, helpText, description, listFunction);
 
-// isOnScopeFun("A/B/C", "A/B/C/D", "../C2")
-// isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A");
-// isOnScopeFun("A/B/C", "A/B/C/D", "E/F/G");
-// isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A/B/C/D");
-// isOnScopeFun("A/B/C", "A/B/C/D", "../../../../A/B/");
