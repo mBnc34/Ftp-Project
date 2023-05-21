@@ -1,32 +1,76 @@
 var net = require('net');
 var readline = require('readline');
-const { stdin: input, stdout: output } = require('node:process');
-const fs = require('fs'); // manage file & directory
 
-const client = new net.Socket();
-var terminal = readline.createInterface({ input, output });
-
-terminal.question("Enter name or Ip of your ftp server ?\n", (answer) => {
-      terminal.question("Enter your username:\n", (usernameAnswer) => {
-            terminal.question("Enter your password:\n", (passwordAnswer) => {
-try {
-     // Connection of the client to the local server on his port 21 :
-      client.connect(21, answer, function () {
-      console.log('Connected to FTP server.');
-      client.write(`USER ${usernameAnswer}\r\n`);
-      client.write(`PASS ${passwordAnswer}\r\n`);
-      terminal.on('line', (input)=> {
-            client.write(input + '\r\n');
-      });
-      client.on('data', (data) => {
-            console.log(data.toString());
-      })
+function question(message) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
     });
-      
-} catch (error) {
-      console.log(error);
+
+    rl.question(message, (answer) => {
+      rl.close();
+      resolve(answer);
+    });
+  });
 }
 
-});
-});
-});
+async function authenticate(client) {
+  const user = await question("Enter your username:\n");
+  client.write(`USER ${user}\r\n`);
+
+  return new Promise((resolve) => {
+    client.once('data', async (data) => {
+      console.log(`Data received from server: ${data}`);
+
+      const response = data.toString();
+
+      if (response.startsWith('331')) {
+        const password = await question("Enter your password:\n");
+        client.write(`PASS ${password}\r\n`);
+
+        client.once('data', (data) => {
+          console.log(`Data received from server: ${data}`);
+
+          const response = data.toString();
+
+          if (response.startsWith('230')) {
+            console.log('Authentication successful!');
+            resolve();
+          } else {
+            console.log('Invalid password, please try again.');
+            authenticate(client)
+              .then(resolve);
+          }
+        });
+      } else {
+        console.log('Invalid username, please try again.');
+        authenticate(client)
+          .then(resolve);
+      }
+    });
+  });
+}
+
+async function Main() {
+  const serverName = await question("Enter name or IP of your FTP server:\n");
+  const client = net.createConnection(21, serverName);
+
+  client.once('data', async (data) => {
+    console.log(`Data received from server: ${data}`);
+
+    const response = data.toString();
+
+    if (response.startsWith('220')) {
+      console.log(response);
+      await authenticate(client);
+    } else {
+      // Vous êtes déjà authentifié, vous pouvez traiter les autres réponses du serveur ici
+    }
+  });
+
+  // Le reste de votre code...
+
+}
+
+Main();

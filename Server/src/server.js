@@ -30,7 +30,7 @@
             console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
             socket.write('220 Welcome from the server!\r\n');
             socket.on('data', (data) => {
-                  console.log(`data ${data}`);
+                  // console.log(`data ${data}`);
                   handleUserCommand(connectionInformation, data);
             });
             socket.on('close', ()=> {
