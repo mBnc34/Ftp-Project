@@ -49,6 +49,7 @@ function listFunction(connectionInformation, path) {
             
             // console.log(`response : \n${response}`);
             try {
+                  console.log("tessst");
                   connectionInformation.dataSocket.write(response, 'ascii', () => {
                         connectionInformation.dataSocket.end();
                         connectionInformation.connectionSocket.write('226 Transfer complete\r\n');

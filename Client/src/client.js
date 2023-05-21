@@ -29,7 +29,12 @@ function question(message) {
 
 var connectionInformation = {
       client: null,
+      rootDirectory: "Client/RootDirectory",
       questionFunction: question,
+      dataSocket: null,
+      dataSocketPromise: undefined,
+      dataCommand: null,
+      connectionMode: "passive"
 }
 
 async function Main() {
