@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "node Client/src/client.js",
+    "client": "node ./node_modules/nodemon/bin/nodemon.js Client/src/client.js",
     "server": "node ./node_modules/nodemon/bin/nodemon.js Server/src/server.js"
   },
   "author": "Moussa",
