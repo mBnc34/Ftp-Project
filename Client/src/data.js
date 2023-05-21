@@ -19,12 +19,16 @@ async function handleClientCommand(connectionInformation) {
                         await commands.myCommands["LIST"].callback(connectionInformation);
                         // })
                         break;
-                  case "RETR":
-                        const fileName = dataSplit[1].trim();
+                  case "STOR":
+                        const fileNameStor = dataSplit[1].trim();
                         await commands.myCommands["PASV"].callback(connectionInformation);
-                        // connectionInformation.dataSocketPromise.then(() => {
-                        await commands.myCommands["RETR"].callback(connectionInformation, fileName);
-                        // })
+                        await commands.myCommands["STOR"].callback(connectionInformation, fileNameStor);
+
+                        break;
+                  case "RETR":
+                        const fileNameRetr = dataSplit[1].trim();
+                        await commands.myCommands["PASV"].callback(connectionInformation);
+                        await commands.myCommands["RETR"].callback(connectionInformation, fileNameRetr);
                         break;
                   default:
                         console.log("command no recognized");
