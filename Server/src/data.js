@@ -6,9 +6,6 @@ const commands = require('./command');
 require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
 console.log(commands.myCommands);
 
-// get : RETR
-// close : QUIT
-
 
 function handleUserCommand(connectionInformation, data) {
 

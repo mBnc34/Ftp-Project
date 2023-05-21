@@ -1,4 +1,10 @@
 const net = require('net');
+const commands = require('../command');
+
+const name = 'PASV';
+const helpText = 'PASV';
+const description = 'To use passive mode';
+
 
 function pasvFunction(connectionInformation) {
       connectionInformation.dataSocketPromise = new Promise((resolve, reject) => {
@@ -35,7 +41,4 @@ function pasvFunction(connectionInformation) {
       })
 }
 
-
-module.exports = {
-      pasvFunction,
-};
+commands.add(name, helpText, description, pasvFunction);

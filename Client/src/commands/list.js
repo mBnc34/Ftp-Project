@@ -1,17 +1,17 @@
-const fs = require('fs');
+const commands = require('../command.js');
+
+const name = 'LIST';
+const helpText = 'LIST [<sp> pathname]';
+const description = 'List all files in a specified directory';
 
 async function listFunction(connectionInformation) {
-      const rootDir = connectionInformation.rootDirectory;
-
 
       connectionInformation.dataSocketPromise.then(() => {
             connectionInformation.client.write("LIST");
             try {
                   connectionInformation.dataSocket.on('data', (data) => {
                         console.log(`${data}\n`);
-                        // connectionInformation.dataSocket.write(data);
                         // console.log(`Received ${data.length} bytes of data.`);
-                        // console.log(`stor received data \n${data}`);
                   });
             } catch (error) {
                   console.log(error);
@@ -22,6 +22,4 @@ async function listFunction(connectionInformation) {
 
 }
 
-module.exports = {
-      listFunction,
-};
+commands.add(name, helpText, description, listFunction);
