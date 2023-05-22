@@ -14,7 +14,7 @@ async function authenticate(connectionInformation) {
                         connectionInformation.client.write(`PASS ${password}\r\n`);
 
                         connectionInformation.client.once('data', (data) => {
-                              console.log(`Data received from server: ${data}`);
+                              // console.log(`Data received from server: ${data}`);
 
                               const response = data.toString();
 

@@ -33,7 +33,7 @@ var connectionInformation = {
   dataSocket: null,
   dataSocketPromise: undefined,
   dataCommand: null,
-  connectionMode: "passive"
+  connectionMode: "PASV"
 }
 
 async function Main() {
@@ -59,7 +59,7 @@ async function Main() {
           const response = data.toString();
     
           if (response.startsWith('220')) {
-            console.log(response);
+            // console.log(response);
             await authenticate(connectionInformation);
             handleClientCommand(connectionInformation);
           } else {
