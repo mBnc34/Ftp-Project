@@ -38,46 +38,44 @@ var connectionInformation = {
 
 async function Main() {
   let client;
+  let notConnected = true;
 
-  while (true) {
+
+  while (notConnected) {
     const serverName = await question("Enter name or IP of your FTP server:\n");
-    client = new net.Socket();
+    // client = new net.Socket();
 
     try {
-      await new Promise((resolve, reject) => {
-        connectionInformation.client = client.connect(21, serverName, () => {
-          console.log('Connected to FTP server.');
+      connectionInformation.client = net.createConnection(21, serverName, () => {
+        console.log('Connected to FTP server.');
+      });
+    
+      connectionInformation.client.on('error', (error) => {
+        console.log('Server not found, please try again.');
+      });
+    
+      await new Promise((resolve) => {
+        connectionInformation.client.once('data', async (data) => {
+          const response = data.toString();
+    
+          if (response.startsWith('220')) {
+            console.log(response);
+            await authenticate(connectionInformation);
+            handleClientCommand(connectionInformation);
+          } else {
+            console.log('Unexpected response from server:', response);
+          }
+    
           resolve();
-        });
-
-        client.on('error', (error) => {
-          //     console.error(`Error connecting to server: ${error.message}`);
-          reject(error);
+          notConnected = false;
         });
       });
-
-      break; // end while
     } catch (error) {
-      console.log('Server not found, please try again.');
+      console.log('Error connecting to server:', error.message);
     }
+    
+
   }
-
-  client.once('data', async (data) => {
-    //     console.log(`Data received from server: ${data}`);
-
-    const response = data.toString();
-
-    if (response.startsWith('220')) {
-      console.log(response);
-      await authenticate(connectionInformation).then(() => {
-        handleClientCommand(connectionInformation)
-      })
-    } else {
-      // Main();
-    }
-  });
-
-
 }
 
 Main();
