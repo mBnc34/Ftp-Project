@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const name = 'RETR';
 const helpText = 'RETR <sp> <pathname>';
-const description = 'To donwload a specified file';
+const description = 'To download a specified file';
 
 async function retrFunction(connectionInformation, fileName) {
       const rootDir = connectionInformation.rootDirectory;

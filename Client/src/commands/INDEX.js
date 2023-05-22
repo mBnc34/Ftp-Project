@@ -4,3 +4,4 @@ require('./pasv');
 require('./pwd');
 require('./retr');
 require('./stor');
+require('./mode');

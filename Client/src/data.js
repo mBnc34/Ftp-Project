@@ -10,6 +10,10 @@ async function handleClientCommand(connectionInformation) {
             let command = dataSplit[0].trim().toUpperCase();
             // console.log(`command : ${command}`);
             switch (command) {
+                  case "MODE":
+                        const dataMode = dataSplit[1].trim();
+                        await commands.myCommands["MODE"].callback(connectionInformation, dataMode);
+                        break;
                   case "PWD":
                         await commands.myCommands["PWD"].callback(connectionInformation);
                         break;
