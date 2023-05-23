@@ -36,6 +36,7 @@ function listFunction(connectionInformation, path) {
       // else
 
 
+      // console.log(`final path${finalPath}`);
       fs.readdir(finalPath, (err, files) => {
             if (err) {
                   connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');

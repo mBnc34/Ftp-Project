@@ -30,13 +30,14 @@ function deleFunction(connectionInformation, path) {
             return;
       };
 
-      fs.rm(finalPath, (err)=> {
+      fs.unlink(finalPath, (err)=> {
             if (err) {
                   console.log(err);
                   connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
             } else {
                   console.log("file deleted with success");
                   connectionInformation.connectionSocket.write(`250 ${path} deleted \r\n`);
+                  console.log(connectionInformation.currentDirectory);
             }
       })
 };
