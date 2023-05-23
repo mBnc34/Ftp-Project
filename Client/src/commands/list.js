@@ -1,4 +1,5 @@
 const commands = require('../command.js');
+const colors = require('ansi-colors');
 
 const name = 'LIST';
 const helpText = 'LIST [<sp> pathname]';
@@ -10,9 +11,12 @@ async function listFunction(connectionInformation) {
             connectionInformation.client.write("LIST");
             try {
                   connectionInformation.dataSocket.on('data', (data) => {
-                        console.log(`${data}\n`);
+                        console.log(`${data.toString().split('\n')
+                              .map(line => (line.startsWith('d') ? colors.redBright(line) : line))
+                              .join('\n')}\n`);
                         // console.log(`Received ${data.length} bytes of data.`);
                   });
+
             } catch (error) {
                   console.log(error);
                   return;
