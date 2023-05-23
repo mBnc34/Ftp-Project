@@ -56,7 +56,7 @@ async function Main() {
     // client = new net.Socket();
 
     try {
-      connectionInformation.client = net.createConnection(21, serverName, () => {
+      connectionInformation.client = net.createConnection(21000, serverName, () => {
         console.log('Connected to FTP server.');
       });
 

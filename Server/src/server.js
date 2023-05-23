@@ -3,7 +3,7 @@ const net = require('net');
 const { handleUserCommand } = require('./data.js');
 // require('./commands/INDEX.js');//pour remplir toutes les commandes
 
-const PORT = 21;
+const PORT = 21000;
 const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
 // const HOST = '172.18.80.165';
 const server = net.createServer();
@@ -54,5 +54,5 @@ server.on('connection', socket => {
       })
 });
 
-server.listen(PORT, HOST, () => console.log('Server FTP launched on port 21'));
+server.listen(PORT, HOST, () => console.log(`Server FTP launched on port ${PORT}`));
       // server.listen(PORT,  () => console.log('Server FTP launched on port 21'));
