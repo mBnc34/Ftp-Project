@@ -26,19 +26,29 @@ function question(message) {
   });
 };
 
-var connectionInformation = {
-  client: null,
-  rootDirectory: "Client/RootDirectory",
-  questionFunction: question,
-  dataSocket: null,
-  dataSocketPromise: undefined,
-  dataCommand: null,
-  connectionMode: "PASV"
-}
+// var connectionInformation = {
+//   client: null,
+//   rootDirectory: "Client/RootDirectory",
+//   questionFunction: question,
+//   dataSocket: null,
+//   dataSocketPromise: undefined,
+//   dataCommand: null,
+//   connectionMode: "PASV"
+// }
 
 async function Main() {
   let client;
   let notConnected = true;
+  var connectionInformation = {
+    client: null,
+    rootDirectory: "Client/RootDirectory",
+    questionFunction: question,
+    dataSocket: null,
+    portServer: null,
+    dataSocketPromise: undefined,
+    dataCommand: null,
+    connectionMode: "PASV"
+  }
 
 
   while (notConnected) {
@@ -49,15 +59,27 @@ async function Main() {
       connectionInformation.client = net.createConnection(21, serverName, () => {
         console.log('Connected to FTP server.');
       });
-    
+
       connectionInformation.client.on('error', (error) => {
-        console.log('Server not found, please try again.');
+        if (error.toString().includes("ENOTFOUND")) {
+          console.log('Server not found, please try again.');
+          Main();
+        }
+        // console.log('client error:', error);
+        else if(error.toString().includes("write ECONNABORTED")){
+          console.log("error on client, reconnect please\n");
+        }
+        Main();
+        // console.log('Error code:', error.code);
+        // console.log('Error message:', error.message);
+        // console.log('Stack trace:', error.stack);
+
       });
-    
+
       await new Promise((resolve) => {
         connectionInformation.client.once('data', async (data) => {
           const response = data.toString();
-    
+
           if (response.startsWith('220')) {
             // console.log(response);
             await authenticate(connectionInformation);
@@ -65,7 +87,7 @@ async function Main() {
           } else {
             console.log('Unexpected response from server:', response);
           }
-    
+
           resolve();
           notConnected = false;
         });
@@ -73,7 +95,7 @@ async function Main() {
     } catch (error) {
       console.log('Error connecting to server:', error.message);
     }
-    
+
 
   }
 }

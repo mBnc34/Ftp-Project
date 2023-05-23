@@ -6,12 +6,14 @@ async function handleClientCommand(connectionInformation) {
       //lancer d'abord une premiere fonction pour pwd, ls etc... l'initialisation
       while (true) {
             let data = await connectionInformation.questionFunction("");
+            // console.log(`data : ${data}`);
             let dataSplit = data.toString().split(" ");
             let command = dataSplit[0].trim().toUpperCase();
             // console.log(`command : ${command}`);
             switch (command) {
                   case "MODE":
                         const dataMode = dataSplit[1].trim();
+                        // console.log(`dataMode : ${dataMode}`);
                         await commands.myCommands["MODE"].callback(connectionInformation, dataMode);
                         break;
                   case "PWD":

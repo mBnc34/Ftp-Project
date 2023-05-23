@@ -12,8 +12,7 @@ async function pwdFunction(connectionInformation) {
                   console.log(`${data}`);
                   //extraire le  code et  la reeponse
                   // mettre la reponse dans connectionInformation
-            })
-      
-}
+            });
+};
 
 commands.add(name,helpText,description,pwdFunction);

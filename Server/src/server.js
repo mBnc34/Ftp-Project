@@ -4,8 +4,8 @@ const { handleUserCommand } = require('./data.js');
 // require('./commands/INDEX.js');//pour remplir toutes les commandes
 
 const PORT = 21;
-// const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
-const HOST = '172.18.80.165';
+const HOST = 'localhost'; // a enlever pour ecouter sur d'autres reseau
+// const HOST = '172.18.80.165';
 const server = net.createServer();
 
 // le rootDirectory : le point d'entrée du client (ne peut pas aller avant ca). --> a limité selon les permissions
@@ -30,7 +30,7 @@ server.on('connection', socket => {
       console.log(`Client ${socket.remoteAddress}:${socket.remotePort} connected `);
       socket.write('220 Welcome from the server!\r\n');
       socket.on('data', (data) => {
-            // console.log(`data ${data}`);
+            console.log(`data ${data}`);
             handleUserCommand(connectionInformation, data);
       });
 
