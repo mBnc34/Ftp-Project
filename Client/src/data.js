@@ -1,6 +1,6 @@
 const commands = require('./command');
 require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
-console.log(commands.myCommands);
+// console.log(commands.myCommands);
 
 async function handleClientCommand(connectionInformation) {
       //lancer d'abord une premiere fonction pour pwd, ls etc... l'initialisation

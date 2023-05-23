@@ -26,15 +26,6 @@ function question(message) {
   });
 };
 
-// var connectionInformation = {
-//   client: null,
-//   rootDirectory: "Client/RootDirectory",
-//   questionFunction: question,
-//   dataSocket: null,
-//   dataSocketPromise: undefined,
-//   dataCommand: null,
-//   connectionMode: "PASV"
-// }
 
 async function Main() {
   let client;
@@ -66,7 +57,7 @@ async function Main() {
           Main();
         }
         // console.log('client error:', error);
-        else if(error.toString().includes("write ECONNABORTED")){
+        else if (error.toString().includes("write ECONNABORTED")) {
           console.log("error on client, reconnect please\n");
         }
         Main();
@@ -95,8 +86,6 @@ async function Main() {
     } catch (error) {
       console.log('Error connecting to server:', error.message);
     }
-
-
   }
 }
 
