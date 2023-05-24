@@ -46,8 +46,8 @@ async function storFunction(connectionInformation, fileName) {
     
           if (!(fs.existsSync(localFile))) {
             console.log("File not found");
-            connectionInformation.dataSocket.close();
-            connectionInformation.dataSocket.end();
+            // connectionInformation.dataSocket.close();
+            // connectionInformation.dataSocket.end();
             resolve(false);
           } else {
             const stats = fs.statSync(localFile);

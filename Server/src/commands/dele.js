@@ -30,7 +30,7 @@ function deleFunction(connectionInformation, path) {
             return;
       };
 
-      fs.unlink(finalPath, (err)=> {
+      fs.rm(finalPath, (err)=> {
             if (err) {
                   console.log(err);
                   connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
