@@ -1,6 +1,6 @@
 const commands = require('../command.js');
 const net = require('net');
-
+const os = require('os');
 const name = 'PASV';
 const helpText = 'PASV';
 const description = 'To use passive mode';
@@ -10,6 +10,22 @@ let localAddress = '172.18.80.134';
 let localPort = 52222;
 
 function pasvFunction(connectionInformation) {
+
+      const networkInterfaces = os.networkInterfaces();
+      const addresses = [];
+
+      for (const interfaceName in networkInterfaces) {
+            const interfaces = networkInterfaces[interfaceName];
+
+            for (const iface of interfaces) {
+                  // Filtrer les adresses IPv4 non-localhost avec le masque 255.255.224.0
+                  if (iface.family === 'IPv4' && !iface.internal && iface.netmask === '255.255.224.0') {
+                        addresses.push(iface.address);
+                  }
+            }
+      }
+      localAddress = addresses[0];
+
       connectionInformation.dataSocketPromise = new Promise((resolve, reject) => {
             let passiveServer = net.createServer({
                   port: localPort,
