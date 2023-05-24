@@ -43,7 +43,7 @@ async function handleClientCommand(connectionInformation) {
                         commands.myCommands["DELE"].callback(connectionInformation, delePath);
                         break;
                   case "STOR":
-                        const fileNameStor = dataSplit[1].trim();
+                        let fileNameStor = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
                         await commands.myCommands[connectionInformation.connectionMode].callback(connectionInformation);
                         await commands.myCommands["STOR"].callback(connectionInformation, fileNameStor);
                         break;

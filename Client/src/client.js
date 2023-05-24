@@ -45,7 +45,6 @@ async function Main() {
   while (notConnected) {
     const serverName = await question("Enter name or IP of your FTP server:\n");
     // client = new net.Socket();
-
     try {
       connectionInformation.client = net.createConnection(21000, serverName, () => {
         console.log('Connected to FTP server.');
@@ -60,7 +59,7 @@ async function Main() {
         else if (error.toString().includes("write ECONNABORTED")) {
           console.log("error on client, reconnect please\n");
         }
-        Main();
+        // Main();
         // console.log('Error code:', error.code);
         // console.log('Error message:', error.message);
         // console.log('Stack trace:', error.stack);
@@ -85,6 +84,7 @@ async function Main() {
       });
     } catch (error) {
       console.log('Error connecting to server:', error.message);
+      Main();
     }
   }
 }
