@@ -9,67 +9,64 @@ let localFile;
 let remoteFile;
 
 async function storFunction(connectionInformation, fileName) {
+  if (fileName === '') {
+    if (await getLocalPath(connectionInformation)) {
+      remoteFile = await getRemoteFile(connectionInformation);
+    } else {
+      return;
+    }
+  } else {
+    if (await getLocalPath(connectionInformation)) {
+      remoteFile = fileName;
+    } else {
+      return;
+    }
+  }
 
-    
-      if (fileName === "") {
-        if (await getLocalPath(connectionInformation)) {
-          remoteFile = await getRemoteFile(connectionInformation);
-        } else {
-          return;
-        }
+  return new Promise((resolve, reject) => {
+    connectionInformation.dataSocketPromise.then(() => {
+      connectionInformation.client.write(`STOR ${remoteFile}`);
+      console.log(`localfile : ${localFile}`);
+      const fileStream = fs.createReadStream(localFile);
+      fileStream.on('error', (error) => {
+        reject(error);
+      });
+      fileStream.on('end', () => {
+        resolve(); // Résoudre la promesse lorsque le transfert est terminé
+      });
+      fileStream.pipe(connectionInformation.dataSocket);
+    });
+  });
+}
+
+async function getLocalPath(connectionInformation) {
+  return new Promise((resolve) => {
+    connectionInformation.questionFunction('localPath of the file : ').then((input) => {
+      localFile = input.toString();
+      localFile = connectionInformation.rootDirectory + '/' + localFile;
+
+      if (!fs.existsSync(localFile)) {
+        console.log('File not found');
+        resolve(false);
       } else {
-        if (await getLocalPath(connectionInformation)) {
-          remoteFile = fileName;
+        const stats = fs.statSync(localFile);
+        if (!stats.isFile()) {
+          console.log('Not a file');
+          resolve(false);
         } else {
-          return;
+          resolve(true);
         }
       }
-    
-      connectionInformation.dataSocketPromise.then(() => {
-        connectionInformation.client.write(`STOR ${remoteFile}`);
-        console.log(`localfile : ${localFile}`);
-        const fileStream = fs.createReadStream(localFile);
-        try {
-          fileStream.pipe(connectionInformation.dataSocket);
-        } catch (error) {
-          console.log(error);
-          return;
-        }
-      });
-    }
-    
-    async function getLocalPath(connectionInformation) {
-      return new Promise((resolve) => {
-        connectionInformation.questionFunction("localPath of the file : ").then((input) => {
-          localFile = input.toString();
-          localFile = connectionInformation.rootDirectory + "/" + localFile;
-    
-          if (!(fs.existsSync(localFile))) {
-            console.log("File not found");
-            // connectionInformation.dataSocket.close();
-            // connectionInformation.dataSocket.end();
-            resolve(false);
-          } else {
-            const stats = fs.statSync(localFile);
-            if (!stats.isFile()) {
-              console.log("Not a file");
-              resolve(false);
-            } else {
-              resolve(true);
-            }
-          }
-        });
-      });
-    }
-    
-    async function getRemoteFile(connectionInformation) {
-      return new Promise((resolve) => {
-        connectionInformation.questionFunction("remote of the file : ").then((input) => {
-          resolve(input.toString());
-        });
-      });
-    }
-    
+    });
+  });
+}
 
+async function getRemoteFile(connectionInformation) {
+  return new Promise((resolve) => {
+    connectionInformation.questionFunction('remote of the file : ').then((input) => {
+      resolve(input.toString());
+    });
+  });
+}
 
 commands.add(name, helpText, description, storFunction);
