@@ -50,8 +50,8 @@ function storFunction(connectionInformation, path) {
             console.log(error);
       }
 
-
-      connectionInformation.dataSocket.on('end', () => {
+      //if problem put on instead of once ?
+      connectionInformation.dataSocket.once('end', () => {
             writeStream.end();
       });
 }
