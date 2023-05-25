@@ -3,9 +3,10 @@ require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaq
 // console.log(commands.myCommands);
 
 async function handleClientCommand(connectionInformation) {
+      commands.myCommands["PWD"].callback(connectionInformation);
       //lancer d'abord une premiere fonction pour pwd, ls etc... l'initialisation
       while (true) {
-            let data = await connectionInformation.questionFunction("");
+            let data = await connectionInformation.questionFunction(``);
             // console.log(`data : ${data}`);
             let dataSplit = data.toString().split(" ");
             let command = dataSplit[0].trim().toUpperCase();
@@ -17,16 +18,17 @@ async function handleClientCommand(connectionInformation) {
                         await commands.myCommands["MODE"].callback(connectionInformation, dataMode);
                         break;
                   case "PWD":
-                        let pwdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
-                        commands.myCommands["PWD"].callback(connectionInformation, pwdPath);
+                        commands.myCommands["PWD"].callback(connectionInformation);
                         break;
                   case "LIST":
+                  case "LS":
                         await commands.myCommands[connectionInformation.connectionMode].callback(connectionInformation);
                         // connectionInformation.dataSocketPromise.then(() => {
                         await commands.myCommands["LIST"].callback(connectionInformation);
                         // })
                         break;
                   case "CWD":
+                  case "CD":
                         let cwdPath = dataSplit.length === 1 ? "" : dataSplit[1].trim().toString();
                         commands.myCommands["CWD"].callback(connectionInformation, cwdPath);
                         break;
@@ -54,6 +56,7 @@ async function handleClientCommand(connectionInformation) {
                         break;
                   case "QUIT":
                         connectionInformation.client.write("QUIT");
+                        return;
                         break;
                   default:
                         console.log("command no recognized");

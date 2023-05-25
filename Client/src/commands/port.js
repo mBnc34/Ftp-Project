@@ -32,7 +32,7 @@ async function portFunction(connectionInformation) {
       }
 
       // console.log(addresses);
-      // localAddress = addresses[0];
+      localAddress = addresses[0];
       // console.log("locaddr " + localAddress);
 
       if (connectionInformation.portServer) {
@@ -60,18 +60,17 @@ async function portFunction(connectionInformation) {
                   resolve();
 
                   dataSocket.on('end', () => {
-                        console.log(`Data socket disconnected`);
+                        // console.log(`Data socket disconnected`);
                         passiveServer.close(); //it's like the server can have juste one socket (the client for the data operation)
-                        passiveServer.close();
                   });
                   dataSocket.on('close', () => {
-                        console.log("client disconnected");
+                        // console.log("client disconnected");
                         connectionInformation.dataSocketPromise = undefined;
                         connectionInformation.dataSocket = null;
                         passiveServer.close();
                   });
                   dataSocket.on('error', () => {
-                        console.log("client disconnected");
+                        // console.log("client disconnected");
                         passiveServer.close();
                         connectionInformation.dataSocketPromise = undefined;
                         connectionInformation.dataSocket = null;

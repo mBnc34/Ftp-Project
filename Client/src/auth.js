@@ -5,7 +5,7 @@ async function authenticate(connectionInformation) {
 
       return new Promise((resolve) => {
             connectionInformation.client.once('data', async (data) => {
-                  console.log(`Data received from server: ${data}`);
+                  // console.log(`Data received from server: ${data}`);
 
                   const response = data.toString();
 
@@ -22,7 +22,7 @@ async function authenticate(connectionInformation) {
                                     console.log('Authentication successful!');
                                     resolve();
                               } else {
-                                    console.log('Invalid password, please try again.');
+                                    console.log('Invalid password, please try to connect again.');
                                     authenticate(connectionInformation)
                                           .then(resolve);
                               }

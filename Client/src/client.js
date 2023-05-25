@@ -2,6 +2,7 @@ const net = require('net');
 const readline = require('readline');
 const { authenticate } = require('./auth')
 const { handleClientCommand } = require('./data')
+const os = require('os');
 
 function question(message) {
   return new Promise((resolve) => {
@@ -26,6 +27,10 @@ function question(message) {
   });
 };
 
+const options = {
+  family: 4 // Utiliser IPv4
+};
+
 
 async function Main() {
   let client;
@@ -33,6 +38,7 @@ async function Main() {
   var connectionInformation = {
     client: null,
     rootDirectory: "Client/RootDirectory",
+    pwd: "",
     questionFunction: question,
     dataSocket: null,
     portServer: null,
@@ -46,7 +52,7 @@ async function Main() {
     const serverName = await question("Enter name or IP of your FTP server:\n");
     // client = new net.Socket();
     try {
-      connectionInformation.client = net.createConnection(21000, serverName, () => {
+      connectionInformation.client = net.createConnection(21000, serverName, options, () => {
         console.log('Connected to FTP server.');
       });
 
@@ -59,7 +65,6 @@ async function Main() {
         else if (error.toString().includes("write ECONNABORTED")) {
           console.log("error on client, reconnect please\n");
         }
-        // Main();
         // console.log('Error code:', error.code);
         // console.log('Error message:', error.message);
         // console.log('Stack trace:', error.stack);
