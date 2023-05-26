@@ -27,9 +27,7 @@ function question(message) {
   });
 };
 
-const options = {
-  family: 4 // Utiliser IPv4
-};
+
 
 
 async function Main() {
@@ -45,16 +43,35 @@ async function Main() {
     dataSocketPromise: undefined,
     dataCommand: null,
     connectionMode: "PASV"
+  };
+
+  const networkInterfaces = os.networkInterfaces();
+  const addresses = [];
+  let localAddress;
+
+  for (const interfaceName in networkInterfaces) {
+    const interfaces = networkInterfaces[interfaceName];
+
+    for (const iface of interfaces) {
+      // if (iface.family === 'IPv4' && !iface.internal && iface.netmask === '255.255.224.0') {
+      if (iface.family === 'IPv4' && !iface.internal && iface.netmask === '255.255.255.0') {
+        addresses.push(iface.address);
+      }
+    }
   }
 
+  localAddress = addresses[0];
+  // console.log(localAddress);
 
   while (notConnected) {
     const serverName = await question("Enter name or IP of your FTP server:\n");
-    // client = new net.Socket();
+    const serverPort = await question("Enter Port of your FTP server:\n");
     try {
-      connectionInformation.client = net.createConnection(21000, serverName, options, () => {
+      connectionInformation.client = new net.Socket();
+      connectionInformation.client = net.createConnection({ port: serverPort, host: serverName, localAddress: localAddress, family: 4}, () => {
         console.log('Connected to FTP server.');
       });
+      // socket.localAddress = localAddress;
 
       connectionInformation.client.on('error', (error) => {
         if (error.toString().includes("ENOTFOUND")) {
