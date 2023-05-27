@@ -1,11 +1,32 @@
 {
   "name": "ftp-project",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "node ./node_modules/nodemon/bin/nodemon.js Client/src/client.js",
+    "server": "node ./node_modules/nodemon/bin/nodemon.js Server/src/server.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Moussa",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mBnc34/Ftp-Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mBnc34/Ftp-Project/issues"
+  },
+  "homepage": "https://github.com/mBnc34/Ftp-Project#readme",
+  "description": "",
+  "dependencies": {
+    "ansi-colors": "^4.1.3",
+    "bcrypt": "^5.1.0",
+    "colors": "^1.4.0",
+    "inquirer": "^9.2.0",
+    "nexe": "^4.0.0-rc.2",
+    "os": "^0.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
 }
