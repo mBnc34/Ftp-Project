@@ -1,5 +1,6 @@
 const commands = require('../command.js');
 const fs = require('fs');
+const colors = require('ansi-colors');
 
 const name = 'RETR';
 const helpText = 'RETR <sp> <pathname>';
@@ -14,15 +15,26 @@ async function retrFunction(connectionInformation, fileName) {
             // inform the server
             connectionInformation.client.write(`RETR ${fileName}`);
             const writeStream = fs.createWriteStream(filePath);
-            try {
-                  connectionInformation.dataSocket.on('data', (data) => {
-                        writeStream.write(data);
-                  });
-            } catch (error) {
-                  console.log(error);
-                  return;
-                  // connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
-            }
+            connectionInformation.client.once('data', (data) => {
+                  if (data.toString().startsWith('550')) {
+                        console.log(colors.bold.green(`error in path or server\n\n`));
+                        connectionInformation.dataSocket.end();
+                        connectionInformation.dataSocketPromise = null;
+                        return;
+                  }
+                  else {
+                        try {
+                              connectionInformation.dataSocket.on('data', (data) => {
+                                    writeStream.write(data);
+                              });
+                              console.log(colors.bold.green(`file ${fileName} successfully retrieved\n\n`));
+                        } catch (error) {
+                              console.log(error);
+                              return;
+                              // connectionInformation.connectionSocket.write("425 Can't open data connection.\r\n");
+                        }
+                  }
+            })
       })
 }
 

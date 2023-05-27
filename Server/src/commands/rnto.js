@@ -23,8 +23,8 @@ function rntoFunction(connectionInformation, newName) {
                   connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
             } else {
                   console.log("file rename succesfully");
-                  connectionInformation.rnfrPath = '';
-                  connectionInformation.connectionSocket.write(`250 + msg \r\n`);
+                  connectionInformation.rnfrPath = ''; //reinitialise
+                  connectionInformation.connectionSocket.write(`250 file exists \r\n`);
             }
       })
 };

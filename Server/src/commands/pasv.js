@@ -15,7 +15,7 @@ function pasvFunction(connectionInformation) {
       if (localAddress.includes("::ffff")) {
             let addrSplit =localAddress.split(":");
             localAddress = addrSplit[addrSplit.length - 1];
-            console.log(`loc  addr :${localAddress}`);
+            console.log(`loc addr :${localAddress}`);
       }
 
       connectionInformation.dataSocketPromise = new Promise((resolve, reject) => {

@@ -1,4 +1,5 @@
 const commands = require('../command.js');
+const colors = require('ansi-colors');
 
 const name = 'PWD';
 const helpText = 'PWD';
@@ -12,7 +13,7 @@ async function pwdFunction(connectionInformation) {
             let dataSplit = data.toString().split(" ");
             let path = dataSplit[1]; // to  don't show the status code, just the path
             connectionInformation.pwd = path; // to be able to know the path on the code
-            console.log(`${path}`);
+            console.log(colors.bold.green(`${path}\n`));
       });
 };
 

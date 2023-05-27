@@ -10,4 +10,5 @@ require('./mkd');
 require('./rmd');
 require('./dele');
 require('./type');
+require('./rename');
 

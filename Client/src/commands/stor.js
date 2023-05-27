@@ -10,17 +10,21 @@ let localFile;
 let remoteFile;
 
 async function storFunction(connectionInformation, fileName) {
-  // to define what show  to the user
+  // to define what show to the user
   if (fileName === '') {
     if (await getLocalPath(connectionInformation)) {
       remoteFile = await getRemoteFile(connectionInformation);
     } else {
+      connectionInformation.dataSocket.end();
+      connectionInformation.dataSocketPromise = null;
       return;
     }
   } else {
     if (await getLocalPath(connectionInformation)) {
       remoteFile = fileName;
     } else {
+      connectionInformation.dataSocket.end();
+      connectionInformation.dataSocketPromise = null;
       return;
     }
   }

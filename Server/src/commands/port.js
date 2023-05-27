@@ -30,7 +30,13 @@ function portFunction(connectionInformation, data) {
     });
 
     connectionInformation.dataSocket.on('error', (err) => {
-      console.log(`Error connecting to ${addr}:${clientPort}: ${err.message}`);
+      if (error.code === 'ECONNRESET') {
+        connectionInformation.isConnected = false;
+        connectionInformation.dataSocket.end();
+        // console.log("Client disconnected");
+      } else {
+        console.log(`Error connecting to ${addr}:${clientPort}: ${err.message}`);
+      }
     });
 
     connectionInformation.dataSocket.on('close', () => {

@@ -32,6 +32,7 @@ function retrFunction(connectionInformation, path) {
             return;
       };
       // else
+      connectionInformation.connectionSocket.write("150 transfer will start\r\n");
       let transferMode;
       if(connectionInformation.type == "A") transferMode = 'ascii'
       else transferMode = 'binary'
