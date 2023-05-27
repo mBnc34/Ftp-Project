@@ -6,15 +6,14 @@ const commands = require('./command');
 require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
 console.log(commands.myCommands);
 
-// get : RETR
-// close : QUIT
-
 
 function handleUserCommand(connectionInformation, data) {
 
       const socket = connectionInformation.connectionSocket;
       const user = connectionInformation.user;
-      const dataSplit = data.toString().split(" ");
+      // const dataSplit = data.toString().split(" ");
+      const dataSplit = data.toString().split(/\s+/);
+      //  split(/\s+/);  --> no matter  how many space
       const command = dataSplit[0].trim();
 
       let filePath;

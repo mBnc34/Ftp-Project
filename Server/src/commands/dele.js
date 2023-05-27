@@ -37,6 +37,7 @@ function deleFunction(connectionInformation, path) {
             } else {
                   console.log("file deleted with success");
                   connectionInformation.connectionSocket.write(`250 ${path} deleted \r\n`);
+                  console.log(connectionInformation.currentDirectory);
             }
       })
 };

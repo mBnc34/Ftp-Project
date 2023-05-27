@@ -12,7 +12,7 @@ let localPort = 58404;
 
 function portFunction(connectionInformation, data) {
   connectionInformation.dataSocketPromise = new Promise((resolve, reject) => {
-    const dataArr = data.split(',');
+    const dataArr = data.replace(/[().]/g, '').split(',');
     const addr = dataArr.slice(0, 4).join('.');
     const clientPort = parseInt(dataArr[4]) * 256 + parseInt(dataArr[5]);
     console.log(`addr:port ${addr}:${clientPort}`);

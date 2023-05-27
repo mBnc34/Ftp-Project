@@ -36,6 +36,7 @@ function listFunction(connectionInformation, path) {
       // else
 
 
+      // console.log(`final path${finalPath}`);
       fs.readdir(finalPath, (err, files) => {
             if (err) {
                   connectionInformation.connectionSocket.write('451 Requested action aborted: local error in processing.\r\n');
@@ -73,13 +74,13 @@ function formatList(pathDir, files) {
             let pathFile = pathDir.toString() + "/" + file.toString();
             let stats = fs.statSync(pathFile);
             let type;
-            if (fs.lstatSync(pathFile).isDirectory()) {
+            if (fs.statSync(pathFile).isDirectory()) {
                   type = "d";
-            } else if (fs.lstatSync(pathFile).isFile()) {
+            } else if (fs.statSync(pathFile).isFile()) {
                   type = "-";
             }
 
-            const typeFile = fs.lstatSync(pathFile).isDirectory() ? 'd' : '-';
+            const typeFile = fs.statSync(pathFile).isDirectory() ? 'd' : '-';
             const name = file.toString();
             const fileSize = stats.size / 1000; //from octet to kO
             const mtime = fs.statSync(pathFile).mtime.toISOString().replace('T', ' ').replace(/\.\d+Z/, '').split(" ").shift();

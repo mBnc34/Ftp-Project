@@ -30,7 +30,7 @@ function rmdFunction(connectionInformation, path) {
             return;
       };
 
-      fs.rmdir(finalPath, (err)=> {
+      fs.rm(finalPath, {recursive: true}, (err)=> {
             if (err) {
                   console.log(err);
             } else {
