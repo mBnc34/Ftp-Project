@@ -2,7 +2,7 @@ const commands = require('../command.js');
 const bcrypt = require('bcrypt');
 
 const fs = require('fs');
-const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/src/Users/users.json';
+const usersFile = 'Server/src/Users/users.json';
 const rawData = fs.readFileSync(usersFile);
 const users = JSON.parse(rawData);
 
@@ -17,12 +17,12 @@ function passwordFunction(connectionInformation, password) {
       
       if(match){
             connectionInformation.isConnected = true;
-            connectionInformation.connectionSocket.write('230 Login successful.\r\n');
+            connectionInformation.connectionSocket.write('230 User logged in, proceed.\r\n');
             // appelé une fonction pour retr les droits et dossier de base
             return;
           }
           //else
-          connectionInformation.user = null; //reinitialiser le user
+          connectionInformation.user = null; 
       //     connectionInformation.connectionSocket.write('431 Invalid password.\r\n');
       connectionInformation.connectionSocket.write('530 Not logged In.\r\n');
 };
