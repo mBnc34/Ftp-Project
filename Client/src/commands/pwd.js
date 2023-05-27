@@ -10,11 +10,9 @@ async function pwdFunction(connectionInformation) {
 
       connectionInformation.client.once('data', (data) => {
             let dataSplit = data.toString().split(" ");
-            let path = dataSplit[1];
-            connectionInformation.pwd = path;
+            let path = dataSplit[1]; // to  don't show the status code, just the path
+            connectionInformation.pwd = path; // to be able to know the path on the code
             console.log(`${path}`);
-            //extraire le  code et  la reeponse
-            // mettre la reponse dans connectionInformation
       });
 };
 

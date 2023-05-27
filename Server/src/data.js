@@ -11,7 +11,9 @@ function handleUserCommand(connectionInformation, data) {
 
       const socket = connectionInformation.connectionSocket;
       const user = connectionInformation.user;
-      const dataSplit = data.toString().split(" ");
+      // const dataSplit = data.toString().split(" ");
+      const dataSplit = data.toString().split(/\s+/);
+      //  split(/\s+/);  --> no matter  how many space
       const command = dataSplit[0].trim();
 
       let filePath;

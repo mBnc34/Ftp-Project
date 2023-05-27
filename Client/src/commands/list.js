@@ -11,10 +11,10 @@ async function listFunction(connectionInformation) {
             connectionInformation.client.write("LIST");
             try {
                   connectionInformation.dataSocket.on('data', (data) => {
+                        // to colors the directory in red (a file start with "-" in the response and a dir with "d")
                         console.log(`${data.toString().split('\n')
                               .map(line => (line.startsWith('d') ? colors.redBright(line) : line))
                               .join('\n')}\n`);
-                        // console.log(`Received ${data.length} bytes of data.`);
                   });
 
             } catch (error) {

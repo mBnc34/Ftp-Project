@@ -3,23 +3,23 @@ const readline = require('readline');
 const { authenticate } = require('./auth')
 const { handleClientCommand } = require('./data')
 const os = require('os');
+const colors = require('ansi-colors');
 
 function question(message) {
   return new Promise((resolve) => {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
-      terminal: false // Désactiver le mode terminal pour éviter les lignes en double
+      terminal: false //  that avoid a problem of 2 same line seen
     });
 
-    process.stdout.write(message); // Afficher le message sans sauter de ligne
+    process.stdout.write(message);
 
     rl.on('line', (answer) => {
       rl.close();
       resolve(answer);
     });
 
-    // Effacer la ligne actuelle lorsque l'utilisateur appuie sur Entrée
     rl.on('SIGINT', () => {
       rl.clearLine();
       rl.close();
@@ -31,7 +31,6 @@ function question(message) {
 
 
 async function Main() {
-  let client;
   let notConnected = true;
   var connectionInformation = {
     client: null,
@@ -45,13 +44,12 @@ async function Main() {
     connectionMode: "PASV"
   };
 
+  // a section to extract ip of the computer and use the specific from the school network (because the only that use subnet mask 255.255.224.0)
   const networkInterfaces = os.networkInterfaces();
   const addresses = [];
   let localAddress;
-
   for (const interfaceName in networkInterfaces) {
     const interfaces = networkInterfaces[interfaceName];
-
     for (const iface of interfaces) {
       // if (iface.family === 'IPv4' && !iface.internal && iface.netmask === '255.255.224.0') {
       if (iface.family === 'IPv4' && !iface.internal && iface.netmask === '255.255.255.0') {
@@ -59,45 +57,40 @@ async function Main() {
       }
     }
   }
-
   localAddress = addresses[0];
-  // console.log(localAddress);
+
 
   while (notConnected) {
-    const serverName = await question("Enter name or IP of your FTP server:\n");
-    const serverPort = await question("Enter Port of your FTP server:\n");
+    const serverName = await question(colors.bold.green("Enter name or IP of your FTP server:\n"));
+    const serverPort = await question(colors.bold.green("Enter Port of your FTP server:\n"));
     try {
-      connectionInformation.client = new net.Socket();
-      connectionInformation.client = net.createConnection({ port: serverPort, host: serverName, localAddress: localAddress, family: 4}, () => {
-        console.log('Connected to FTP server.');
+      // connectionInformation.client = new net.Socket();
+      connectionInformation.client = net.createConnection({ port: serverPort, host: serverName, localAddress: localAddress, family: 4 }, () => {
+        console.log(colors.bold.green('Connected to FTP server.\n'));
       });
-      // socket.localAddress = localAddress;
 
+      // to don't crash in case of errors with some errors that i met
       connectionInformation.client.on('error', (error) => {
         if (error.toString().includes("ENOTFOUND")) {
-          console.log('Server not found, please try again.');
+          console.log(colors.bold.green('Server not found, please try again.\n'));
           Main();
         }
-        // console.log('client error:', error);
         else if (error.toString().includes("write ECONNABORTED")) {
-          console.log("error on client, reconnect please\n");
+          console.log(colors.bold.green("error on client, reconnect please\n"));
         }
-        // console.log('Error code:', error.code);
-        // console.log('Error message:', error.message);
-        // console.log('Stack trace:', error.stack);
-
       });
 
       await new Promise((resolve) => {
         connectionInformation.client.once('data', async (data) => {
           const response = data.toString();
 
+          // if we are now "interconnected" --> authentication
           if (response.startsWith('220')) {
-            // console.log(response);
             await authenticate(connectionInformation);
+            // when the authentication is resolve --> we can start the client program :
             handleClientCommand(connectionInformation);
           } else {
-            console.log('Unexpected response from server:', response);
+            console.log(colors.bold.green('Unexpected response from server:', response, "\n"));
           }
 
           resolve();
@@ -105,7 +98,7 @@ async function Main() {
         });
       });
     } catch (error) {
-      console.log('Error connecting to server:', error.message);
+      console.log(colors.bold.green('Error connecting to server:', error.message));
       Main();
     }
   }

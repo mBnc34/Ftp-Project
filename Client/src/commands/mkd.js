@@ -7,10 +7,8 @@ const description = 'To create a directory';
 function mkdFunction(connectionInformation, path) {
       connectionInformation.client.write(`MKD ${path}\r\n`);
 
-      connectionInformation.client.once('data',(data)=> {
+      connectionInformation.client.once('data', (data) => {
             console.log(`${data}`);
-            //extraire le  code et  la reeponse
-            // mettre la reponse dans connectionInformation
       });
 };
 

@@ -1,5 +1,6 @@
 const commands = require('../command.js');
 const fs = require('fs');
+const colors = require('ansi-colors');
 
 const name = 'STOR';
 const helpText = 'STOR <sp> pathname';
@@ -9,6 +10,7 @@ let localFile;
 let remoteFile;
 
 async function storFunction(connectionInformation, fileName) {
+  // to define what show  to the user
   if (fileName === '') {
     if (await getLocalPath(connectionInformation)) {
       remoteFile = await getRemoteFile(connectionInformation);
@@ -23,36 +25,40 @@ async function storFunction(connectionInformation, fileName) {
     }
   }
 
+
   return new Promise((resolve, reject) => {
+    // start just if we have a data connection :
     connectionInformation.dataSocketPromise.then(() => {
+      // send the command
       connectionInformation.client.write(`STOR ${remoteFile}`);
-      // console.log(`localfile : ${localFile}`);
       const fileStream = fs.createReadStream(localFile);
       fileStream.on('error', (error) => {
         reject(error);
       });
       fileStream.on('end', () => {
         resolve(); // 
-        console.log(`file ${fileName} successfully stored`);
+        console.log(colors.bold.green(`file ${fileName} successfully stored !!\n\n`));
       });
+      // start the transfer
       fileStream.pipe(connectionInformation.dataSocket);
     });
   });
 }
 
+// ask the client the final path and check if it's a real path
 async function getLocalPath(connectionInformation) {
   return new Promise((resolve) => {
-    connectionInformation.questionFunction('localPath of the file : ').then((input) => {
+    connectionInformation.questionFunction(colors.bold.green('localPath of the file : ')).then((input) => {
       localFile = input.toString();
       localFile = connectionInformation.rootDirectory + '/' + localFile;
 
       if (!fs.existsSync(localFile)) {
-        console.log('File not found');
+        console.log(colors.bold.green('File not found\n\n'));
         resolve(false);
       } else {
         const stats = fs.statSync(localFile);
         if (!stats.isFile()) {
-          console.log('Not a file');
+          console.log(colors.bold.green('Not a file\n\n'));
           resolve(false);
         } else {
           resolve(true);
@@ -62,9 +68,10 @@ async function getLocalPath(connectionInformation) {
   });
 }
 
+// where the client wan't to store on the server and with which name
 async function getRemoteFile(connectionInformation) {
   return new Promise((resolve) => {
-    connectionInformation.questionFunction('remote of the file : ').then((input) => {
+    connectionInformation.questionFunction(colors.bold.green('remotePath of the file : ')).then((input) => {
       resolve(input.toString());
     });
   });

@@ -3,14 +3,14 @@ require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaq
 // console.log(commands.myCommands);
 
 async function handleClientCommand(connectionInformation) {
+      // when the user is connected we show the path and the list automaticaly (the first time)
       commands.myCommands["PWD"].callback(connectionInformation);
-      //lancer d'abord une premiere fonction pour pwd, ls etc... l'initialisation
+
       while (true) {
             let data = await connectionInformation.questionFunction(``);
-            // console.log(`data : ${data}`);
-            let dataSplit = data.toString().split(" ");
+            let dataSplit = data.toString().split(/\s+/);
             let command = dataSplit[0].trim().toUpperCase();
-            // console.log(`command : ${command}`);
+
             switch (command) {
                   case "MODE":
                         const dataMode = dataSplit[1].trim();
@@ -23,9 +23,7 @@ async function handleClientCommand(connectionInformation) {
                   case "LIST":
                   case "LS":
                         await commands.myCommands[connectionInformation.connectionMode].callback(connectionInformation);
-                        // connectionInformation.dataSocketPromise.then(() => {
                         await commands.myCommands["LIST"].callback(connectionInformation);
-                        // })
                         break;
                   case "CWD":
                   case "CD":
@@ -59,7 +57,7 @@ async function handleClientCommand(connectionInformation) {
                         return;
                         break;
                   default:
-                        console.log("command no recognized");
+                        console.log("command no recognized\n");
                         break;
             }
       }
