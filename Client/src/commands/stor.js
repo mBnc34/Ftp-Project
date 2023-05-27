@@ -26,13 +26,14 @@ async function storFunction(connectionInformation, fileName) {
   return new Promise((resolve, reject) => {
     connectionInformation.dataSocketPromise.then(() => {
       connectionInformation.client.write(`STOR ${remoteFile}`);
-      console.log(`localfile : ${localFile}`);
+      // console.log(`localfile : ${localFile}`);
       const fileStream = fs.createReadStream(localFile);
       fileStream.on('error', (error) => {
         reject(error);
       });
       fileStream.on('end', () => {
-        resolve(); // Résoudre la promesse lorsque le transfert est terminé
+        resolve(); // 
+        console.log(`file ${fileName} successfully stored`);
       });
       fileStream.pipe(connectionInformation.dataSocket);
     });
