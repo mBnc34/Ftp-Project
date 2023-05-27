@@ -1,4 +1,5 @@
 const commands = require('../command.js');
+const colors = require('ansi-colors');
 
 const name = 'RMD';
 const helpText = 'RMD <sp> <pathname>';
@@ -10,7 +11,12 @@ function rmdFunction(connectionInformation, path) {
             connectionInformation.client.write(`RMD ${path}\r\n`);
 
             connectionInformation.client.once('data', (data) => {
-                  console.log(`${data}`);
+                  if (data.toString().startsWith('250')) {
+                        console.log(colors.bold.green(`dir ${path} successfully deleted\n\n`));
+                  }
+                  else {
+                        console.log(colors.bold.green("error on the path or inside server\n\n"));
+                  }
             });
       } else {
             console.log("cannot remove the current directory, need to move before");

@@ -1,4 +1,5 @@
 const commands = require('../command.js');
+const colors = require('ansi-colors');
 
 const name = 'MODE';
 const helpText = 'MODE <"PASV" or "ACTIVE">';
@@ -8,13 +9,13 @@ const description = 'To change the connection Mode of data Socket';
 function modeFunction(connectionInformation, data) {
       if (data == "PASV") {
             connectionInformation.connectionMode = "PASV";
-            console.log("Connection mode is now PASSIVE");
+            console.log(colors.bold.green("Connection mode is now PASSIVE\n\n"));
       } else if (data == "ACTIVE" || data == "PORT") {
             connectionInformation.connectionMode = "PORT";
-            console.log("Connection mode is now ACTIVE");
+            console.log(colors.bold.green("Connection mode is now ACTIVE\n\n"));
       }
       else {
-            console.log("Mode Options Non-recognized");
+            console.log(colors.bold.green("Mode Options Non-recognized\n\n"));
       }
 }
 

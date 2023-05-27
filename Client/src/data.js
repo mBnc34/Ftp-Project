@@ -1,10 +1,9 @@
 const commands = require('./command');
+const colors = require('ansi-colors');
 require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
 // console.log(commands.myCommands);
 
 async function handleClientCommand(connectionInformation) {
-      // when the user is connected we show the path and the list automaticaly (the first time)
-      commands.myCommands["PWD"].callback(connectionInformation);
 
       while (true) {
             let data = await connectionInformation.questionFunction(``);
@@ -52,12 +51,16 @@ async function handleClientCommand(connectionInformation) {
                         await commands.myCommands[connectionInformation.connectionMode].callback(connectionInformation);
                         await commands.myCommands["RETR"].callback(connectionInformation, fileNameRetr);
                         break;
+                  case "RENAME":
+                  case "RN":
+                        await commands.myCommands["RENAME"].callback(connectionInformation);
+                        break;
                   case "QUIT":
+                        console.log("test quit");
                         connectionInformation.client.write("QUIT");
-                        return;
                         break;
                   default:
-                        console.log("command no recognized\n");
+                        console.log(colors.bold.green("command no recognized\n"));
                         break;
             }
       }
