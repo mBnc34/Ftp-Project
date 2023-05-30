@@ -2,9 +2,9 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 
 // Création du fichier JSON pour stocker les informations des utilisateurs
-// const usersFile = "C:\Users\mouss\Desktop\Ftp-Project\Server\Users\users.json";
+
 // fs.writeFileSync(usersFile, '{}');
-const usersFile = 'Server/Users/users.json';
+const usersFile = 'Server/src/Users/users.json';
 const rawData = fs.readFileSync(usersFile);
 const users = JSON.parse(rawData);
 
@@ -38,4 +38,4 @@ function addUser(username, password) {
 }
 
 // Exemple d'utilisation de la fonction addUser
-addUser('test', 'test');
+addUser('usj', 'usj');
