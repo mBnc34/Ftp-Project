@@ -4,36 +4,36 @@ const bcrypt = require('bcrypt');
 // Création du fichier JSON pour stocker les informations des utilisateurs
 // const usersFile = "C:\Users\mouss\Desktop\Ftp-Project\Server\Users\users.json";
 // fs.writeFileSync(usersFile, '{}');
-const usersFile = 'C:/Users/mouss/Desktop/Ftp-Project/Server/Users/users.json';
+const usersFile = 'Server/Users/users.json';
 const rawData = fs.readFileSync(usersFile);
 const users = JSON.parse(rawData);
 
-// Fonction pour ajouter un nouvel utilisateur avec un mot de passe haché
+// add a user with his password hash
 function addUser(username, password) {
 
-  // Vérification si l'utilisateur existe déjà
+  // check if user already exist 
   if (users.hasOwnProperty(username)) {
     console.error(`L'utilisateur ${username} existe déjà`);
     return;
   }
 
-  // Hachage du mot de passe avec bcrypt
+  // hash of the password
   bcrypt.hash(password, 10, (err, hash) => {
     if (err) {
       console.error(`Erreur lors du hachage du mot de passe : ${err}`);
       return;
     }
 
-    // Ajout de l'utilisateur avec le mot de passe haché
+    // add user with hash password
     users[username] = {
       user: username,
       password: hash
     };
 
-    // Écriture du fichier JSON mis à jour
+    // write of the json file updated
     fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
 
-    console.log(`L'utilisateur ${username} a été ajouté avec succès.`);
+    console.log(`User ${username} was adding succesfully.`);
   });
 }
 

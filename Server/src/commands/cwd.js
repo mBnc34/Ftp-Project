@@ -9,9 +9,11 @@ let isOnScope;
 let finalPath;
 
 function cwdFunction(connectionInformation, path) {
-      console.log(`path cwd : ${path}`);
+ 
       const rootDir = connectionInformation.rootDirectory;
       let currentDir;
+
+      // define the starting path
       if (path.charAt(0) == "/") {
             currentDir = rootDir;
       }
@@ -19,6 +21,7 @@ function cwdFunction(connectionInformation, path) {
             currentDir = connectionInformation.currentDirectory;
       };
 
+      //check if the user have acces and the path exists
       isOnScopeFun(rootDir, currentDir, path);
       if (!isOnScope) {
             console.log("non-existant path for the user");
@@ -31,16 +34,16 @@ function cwdFunction(connectionInformation, path) {
             return;
       };
 
-      // else
-      connectionInformation.currentDirectory = finalPath; // pour LIST et reinitialiser apres
+      connectionInformation.currentDirectory = finalPath; //stor the actual path of the client
       connectionInformation.connectionSocket.write("250 Directory succesfully changed\r\n");
 
 };
 
 
+// to have some control on the path like no go before the rootPath ...
 function isOnScopeFun(rootDir, currentDir, path) {
 
-      let dir = currentDir.replace(rootDir, ""); // get the path seen by the client
+      let dir = currentDir.replace(rootDir, ""); 
       dir = dir.split("/").filter(str => str.trim() !== "");
       let pathArr = path.split("/").filter(str => str.trim() !== "");
 

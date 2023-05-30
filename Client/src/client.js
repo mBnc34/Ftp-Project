@@ -14,7 +14,6 @@ function question(message) {
     });
 
     process.stdout.write(message);
-
     rl.on('line', (answer) => {
       rl.close();
       resolve(answer);

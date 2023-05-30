@@ -1,25 +1,17 @@
-// const { server } = require('./server');
 const fs = require('fs');
-// const net = require('net');
 
 const commands = require('./command');
 require('./commands/INDEX.js'); // apres enlever et creer des index.js dans chaque rep pour import les fichiers necessaire
-console.log(commands.myCommands);
+// console.log(commands.myCommands);
 
 
 function handleUserCommand(connectionInformation, data) {
 
       const socket = connectionInformation.connectionSocket;
-      const user = connectionInformation.user;
-      // const dataSplit = data.toString().split(" ");
-      const dataSplit = data.toString().split(/\s+/);
-      //  split(/\s+/);  --> no matter  how many space
+      // const user = connectionInformation.user;
+      const dataSplit = data.toString().split(/\s+/); //  no matter how many space for the split
       const command = dataSplit[0].trim();
 
-      let filePath;
-      // console.log("command : " + command);
-      // if (dataSplit.length > 1) data = dataSplit[1];
-      // else message d'erreur : need data
 
       switch (command) {
             case "OPTS":
@@ -54,7 +46,7 @@ function handleUserCommand(connectionInformation, data) {
             case "NLST":
                   const path = ""; //pour le moment
                   connectionInformation.dataSocketPromise.then(() => {
-                        console.log("inside list promise");
+                        // console.log("inside list promise");
                         commands.myCommands["LIST"].callback(connectionInformation, path);
                   })
 
